@@ -59,13 +59,34 @@ class _MyHomePageState extends State<MyHomePage> {
 
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            Text('Email',),
+            TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: ' Email',
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            Text('password',),
+            TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: ' password',
+              ),
             ),
+            Text('first name',),
+            TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'First name',
+              ),
+            ),
+            Row(
+              children: [
+                ElevatedButton(onPressed: () {}, child: Text("register")),
+                ElevatedButton(onPressed: () {}, child: Text("sign up"))
+              ],
+            ),
+
           ],
         ),
       ),
