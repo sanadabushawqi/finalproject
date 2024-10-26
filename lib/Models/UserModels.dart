@@ -3,12 +3,14 @@ class User{
   String name;
   String phone;
   String note;
+  String Address;
 
   User({
     this.id="",
     this.name="",
     this.phone="",
     this.note="",
+    this.Address="",
   });
 
   factory User.fromJson(Map<String, dynamic> json)=>User(
@@ -16,6 +18,7 @@ class User{
     name:json["name"],
     phone:json["phone"],
     note:json["note"],
+    Address:json["Address"],
   );
 
   Map<String,dynamic>tojson()=>{
@@ -23,5 +26,6 @@ class User{
     "name":name,
     "phone":phone,
     "note":note,
+    "Address":Address,
   };
 }
