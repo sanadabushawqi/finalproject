@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/Utils/Utils.dart';
+import 'package:untitled/Views/RegisterScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,7 +37,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
+  final TextEditingController _txtEmail=TextEditingController();
+  final TextEditingController _txtpassword=TextEditingController();
+  final TextEditingController _txtFirstname=TextEditingController();
   void _incrementCounter() {
     setState(() {
 
@@ -59,12 +63,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text('first name',),
+            TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'First name',
+              ),
+              controller: _txtFirstname,
+            ),
             Text('Email',),
             TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: ' Email',
               ),
+              controller: _txtEmail,
             ),
             Text('password',),
             TextField(
@@ -72,29 +85,32 @@ class _MyHomePageState extends State<MyHomePage> {
                 border: OutlineInputBorder(),
                 hintText: ' password',
               ),
+              controller: _txtpassword,
             ),
-            Text('first name',),
-            TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'First name',
-              ),
-            ),
+
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(onPressed: () {}, child: Text("register")),
-                ElevatedButton(onPressed: () {}, child: Text("sign up"))
+                ElevatedButton(onPressed: () {
+                  Utils uti = new Utils();
+                  uti.showMyDialog(context,_txtFirstname.text,_txtEmail.text);
+                },
+                    child: Text("register")),
+
+                ElevatedButton(onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RegisterScreen()),
+                  );
+                }, child: Text("sign up"))
               ],
             ),
 
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+
     );
   }
 }
