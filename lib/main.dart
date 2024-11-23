@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/Models/User.dart';
 import 'package:untitled/Utils/Utils.dart';
 import 'package:untitled/Views/RegisterScreen.dart';
 
@@ -91,12 +92,12 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                     onPressed: () {
-                      insertUser('sanad', '6723176998642986', 'zedan');
+                      insertUser(new User());
                       Utils uti = new Utils();
                       uti.showMyDialog(context, _txtFirstname.text, _txtEmail.text);
                       // insertUser("firstName", "secondName", "passWord");
                     },
-                    child: Text("register")),
+                    child: Text("log in")),
                 ElevatedButton(
                     onPressed: () {
                       Navigator.push(

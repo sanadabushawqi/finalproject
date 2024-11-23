@@ -17,7 +17,7 @@ class Student{
     this.email="",
   });
 
-  factory student.fromJson(Map<String, dynamic> json)=>Student(
+  factory Student.fromJson(Map<String, dynamic> json)=>Student(
     studentID:json["studentID"],
     firstName:json["firstName"],
     lastName:json[" lastName"],

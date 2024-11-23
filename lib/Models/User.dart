@@ -1,31 +1,32 @@
 class User{
-  String id;
-  String name;
-  String phone;
-  String note;
-  String Address;
+  String userID;
+  String firstName;
+  String lastName;
+  String password;
+  String createdDateTime;
+
 
   User({
-    this.id="",
-    this.name="",
-    this.phone="",
-    this.note="",
-    this.Address="",
+    this.userID="",
+    this.firstName="",
+    this.lastName="",
+    this.password="",
+    this.createdDateTime="",
   });
 
   factory User.fromJson(Map<String, dynamic> json)=>User(
-    id:json["id"],
-    name:json["name"],
-    phone:json["phone"],
-    note:json["note"],
-    Address:json["Address"],
+    userID:json["id"],
+    firstName:json["name"],
+    lastName:json["phone"],
+    password:json["note"],
+    createdDateTime:json["Address"],
   );
 
   Map<String,dynamic>tojson()=>{
-    "id":id,
-    "name":name,
-    "phone":phone,
-    "note":note,
-    "Address":Address,
+    "id":userID,
+    "name":firstName,
+    "phone":lastName,
+    "note":password,
+    "Address":createdDateTime,
   };
 }
