@@ -6,6 +6,7 @@ class Student{
   String ID;
   String birthDate;
   String email;
+  String password;
 
   Student({
     this.studentID="",
@@ -15,6 +16,7 @@ class Student{
     this.ID="",
     this.birthDate="",
     this.email="",
+    this.password="",
   });
 
   factory Student.fromJson(Map<String, dynamic> json)=>Student(
@@ -25,15 +27,17 @@ class Student{
     ID:json["ID"],
     birthDate:json["birthDate"],
     email:json["email"],
+    password:json["password"],
   );
 
-  Map<String,dynamic>tojson()=>{
+  Map<String, dynamic>tojson()=>{
     "studentID":studentID,
     "firstName":firstName,
-    " lastName": lastName,
+    "lastName": lastName,
     "phone":phone,
     "ID":ID,
     "birthDate":birthDate,
     "email":email,
+    "password":password,
   };
 }

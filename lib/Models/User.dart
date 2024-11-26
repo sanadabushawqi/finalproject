@@ -4,6 +4,7 @@ class User{
   String lastName;
   String password;
   String createdDateTime;
+  String email;
 
 
   User({
@@ -12,21 +13,24 @@ class User{
     this.lastName="",
     this.password="",
     this.createdDateTime="",
+    this.email="",
   });
 
   factory User.fromJson(Map<String, dynamic> json)=>User(
-    userID:json["id"],
-    firstName:json["name"],
-    lastName:json["phone"],
-    password:json["note"],
-    createdDateTime:json["Address"],
+    userID:json["userID"],
+    firstName:json["firstName"],
+    lastName:json[" lastName"],
+    password:json["password"],
+    createdDateTime:json["createdDateTime"],
+    email:json["email"],
   );
 
   Map<String,dynamic>tojson()=>{
-    "id":userID,
-    "name":firstName,
-    "phone":lastName,
-    "note":password,
-    "Address":createdDateTime,
+    "userID":userID,
+    "firstName":firstName,
+    "lastName":lastName,
+    "password":password,
+    "createdDateTime":createdDateTime,
+    "email":email,
   };
 }

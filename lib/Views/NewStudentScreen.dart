@@ -18,32 +18,37 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class RegisterPageState extends State<RegisterScreen> {
-  int _counter = 0;
+
   final TextEditingController _txtEmail = TextEditingController();
   final TextEditingController _txtPassword = TextEditingController();
   final TextEditingController _txtFirstName = TextEditingController();
   final TextEditingController _txtLastName = TextEditingController();
-  final TextEditingController _txtuserID = TextEditingController();
-  final TextEditingController _txtcreatedDateTime = TextEditingController();
+  final TextEditingController _txtStudentID = TextEditingController();
+  final TextEditingController _txtPhone = TextEditingController();
+  final TextEditingController _txtID = TextEditingController();
+  final TextEditingController _txtBirthDate = TextEditingController();
 
 
   void insertUserFunc()
   {
-    if(_txtFirstName.text != "" && _txtEmail.text != "" && _txtPassword.text != "" && _txtLastName.text != "" && _txtuserID.text != "" && _txtcreatedDateTime.text != "" )
+    if(_txtFirstName.text != "" && _txtEmail.text != "" && _txtPassword.text != "" && _txtLastName.text != "" && _txtID.text != "" && _txtPhone.text != "" && _txtBirthDate.text != "")
       {
-        var user = new User();
-        user.firstName = _txtFirstName.text;
-        user.userID = _txtEmail.text;
-        user.password = _txtPassword.text;
-        user.lastName = _txtLastName.text;
-        user.createdDateTime = _txtuserID.text;
-        user.email = _txtEmail.text;
-        insertUser(user);
+        var student = new Student();
+        student.firstName = _txtFirstName.text;
+        student.email = _txtEmail.text;
+        student.password = _txtPassword.text;
+        student.lastName = _txtLastName.text;
+        student.ID = _txtID.text;
+        student.phone = _txtPhone.text;
+        student.birthDate = _txtBirthDate.text;
+        inserStudent(student);
       }
     else
       {
         Utils uti = new Utils();
         uti.showMyDialog(context, "Required", "כל השדות חובה");
+
+
       }
   }
 
@@ -99,7 +104,16 @@ class RegisterPageState extends State<RegisterScreen> {
             controller: _txtLastName,
           ),
 
-
+          Text(
+            'phone',
+          ),
+          TextField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: ' phone',
+            ),
+            controller: _txtPhone,
+          ),
           Text(
             'ID',
           ),
@@ -108,23 +122,22 @@ class RegisterPageState extends State<RegisterScreen> {
               border: OutlineInputBorder(),
               hintText: ' ID',
             ),
-            controller: _txtuserID,
+            controller: _txtID,
           ),
           Text(
-            'date time',
+            'birthDate',
           ),
           TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText: ' date time',
+              hintText: ' birthDate',
             ),
-            controller: _txtcreatedDateTime,
+            controller: _txtBirthDate,
           ),
-              TextButton(
-                  onPressed: () {
-                      insertUserFunc();
-                  },
-                  child: Text("register"))
+              TextButton(onPressed: () {
+
+                insertUserFunc();
+              }, child: Text("register"))
         ],),
       ),
     );
