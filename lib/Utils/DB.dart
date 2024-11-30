@@ -34,6 +34,8 @@ Future<void> showUsers() async {
 
 Future<void> insertUser(User user) async {
 
+  connectToMyDB();
+
   var result = await _conn.query(
       'insert into users (firstName, password, lastName,email) values (?, ?,?,?)',
       [user.firstName, user.password, user.lastName, user.email]);
