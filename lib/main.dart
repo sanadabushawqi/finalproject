@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/Models/User.dart';
 import 'package:untitled/Utils/Utils.dart';
+import 'package:untitled/Utils/constants.dart';
 import 'package:untitled/Views/RegisterScreen.dart';
 
 import 'Utils/DB.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: ' Home Page'),
     );
   }
 }
@@ -50,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: appBarcolor,
         title: Text(widget.title),
       ),
       body: Center(

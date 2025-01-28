@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:untitled/Models/Student.dart';
 import 'package:untitled/Models/Student.dart';
 import 'package:untitled/Utils/Utils.dart';
+import 'package:untitled/Utils/constants.dart';
 import '../Models/Student.dart';
 import '../Models/User.dart';
 import '../Utils/DB.dart';
@@ -16,10 +17,13 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
+  final _firstNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _CreadtedDateTimeController = TextEditingController();
+  final _userIDController = TextEditingController();
 
   bool _isSubmitting = false;
   bool _registrationSuccessful = false;
@@ -41,6 +45,36 @@ class _RegisterPageState extends State<RegisterPage> {
     }
     if (value.length < 8) {
       return 'Password must be at least 8 characters';
+    }
+    return null;
+  }
+  String? _validatefirstName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'firstName is required';
+    }
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+    if (!emailRegex.hasMatch(value)) {
+      return 'Invalid firstName format';
+    }
+    return null;
+  }
+  String? _validatelastName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'lastName is required';
+    }
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+    if (!emailRegex.hasMatch(value)) {
+      return 'Invalid lastName format';
+    }
+    return null;
+  }
+  String? _validateuserID(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'userID is required';
+    }
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+    if (!emailRegex.hasMatch(value)) {
+      return 'Invalid userID format';
     }
     return null;
   }
@@ -107,6 +141,10 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor:appBarcolor,
+        title: Text(""),
+      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -147,11 +185,38 @@ class _RegisterPageState extends State<RegisterPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        const SizedBox(height: 15),
+                        TextFormField(
+                          controller: _firstNameController,
+                          decoration: InputDecoration(
+                            labelText: 'first Name',
+                            prefixIcon: const Icon(Icons.person),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          validator: _validatefirstName,
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        const SizedBox(height: 15),
+                        TextFormField(
+                          controller: _lastNameController,
+                          decoration: InputDecoration(
+                            labelText: 'lastName',
+                            prefixIcon: const Icon(Icons.person),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          validator: _validatelastName,
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+
                         const SizedBox(height: 20),
                         TextFormField(
-                          controller: _usernameController,
+                          controller: _userIDController,
                           decoration: InputDecoration(
-                            labelText: 'Username',
+                            labelText: 'User ID',
                             prefixIcon: const Icon(Icons.person),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -159,7 +224,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Username is required';
+                              return 'User ID is required';
                             }
                             return null;
                           },
@@ -175,6 +240,19 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                           validator: _validateEmail,
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        const SizedBox(height: 15),
+                        TextFormField(
+                          controller: _CreadtedDateTimeController,
+                          decoration: InputDecoration(
+                            labelText: 'Creadted Date Time',
+                            prefixIcon: const Icon(Icons.person),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          validator: _validatefirstName,
                           keyboardType: TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 15),
@@ -209,13 +287,17 @@ class _RegisterPageState extends State<RegisterPage> {
                           obscureText: true,
                         ),
                         const SizedBox(height: 20),
+
                         ElevatedButton(
                           onPressed:() {
                               _isSubmitting ? null : _submitForm;
                               //dasdasdadsfsdgghfdg
                             var user = new User();
-                            user.firstName = _usernameController.text;
-                            user.email = _emailController.text;
+                            user.firstName = _firstNameController.text;
+                              user.lastName = _lastNameController.text;
+                              user.email = _emailController.text;
+                              user.userID = _userIDController.text;
+                              user.createdDateTime = _CreadtedDateTimeController.text;
                             user.password = _passwordController.text;
                             insertUser(user);
                             },
