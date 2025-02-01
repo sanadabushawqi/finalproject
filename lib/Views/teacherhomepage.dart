@@ -1,0 +1,200 @@
+import 'package:flutter/material.dart';
+
+
+
+class teacherHomeScreen extends StatefulWidget {
+  const teacherHomeScreen({super.key});
+
+  @override
+  State<teacherHomeScreen> createState() => _teacherHomeScreen();
+}
+
+class _teacherHomeScreen extends State<teacherHomeScreen> {
+  int _currentIndex = 0;
+
+  final List<Widget> _screens = [
+    const DashboardScreen(),
+    const StudentsScreen(),
+    const ScheduleScreen(),
+    const ProfileScreen(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Driving Instructor Portal'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            onPressed: () {
+              // TODO: Implement notifications
+            },
+          ),
+        ],
+      ),
+      body: _screens[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        type: BottomNavigationBarType.fixed,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Dashboard',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            label: 'Students',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: 'Schedule',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DashboardScreen extends StatelessWidget {
+  const DashboardScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Quick Actions',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          GridView.count(
+            shrinkWrap: true,
+            crossAxisCount: 2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            children: [
+              _buildActionCard(
+                context,
+                'Add Student',
+                Icons.person_add,
+                    () {
+                  // TODO: Implement add student
+                },
+              ),
+              _buildActionCard(
+                context,
+                'Schedule Lesson',
+                Icons.add_circle,
+                    () {
+                  // TODO: Implement schedule lesson
+                },
+              ),
+              _buildActionCard(
+                context,
+                'View Reports',
+                Icons.bar_chart,
+                    () {
+                  // TODO: Implement reports
+                },
+              ),
+              _buildActionCard(
+                context,
+                'Settings',
+                Icons.settings,
+                    () {
+                  // TODO: Implement settings
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionCard(
+      BuildContext context,
+      String title,
+      IconData icon,
+      VoidCallback onTap,
+      ) {
+    return Card(
+      elevation: 2,
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 48, color: Theme.of(context).primaryColor),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class StudentsScreen extends StatelessWidget {
+  const StudentsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: 10, // Replace with actual student data
+      itemBuilder: (context, index) {
+        return ListTile(
+          leading: const CircleAvatar(
+            child: Icon(Icons.person),
+          ),
+          title: Text('Student ${index + 1}'),
+          subtitle: const Text('Last lesson: 01/02/2025'),
+          trailing: IconButton(
+            icon: const Icon(Icons.more_vert),
+            onPressed: () {
+              // TODO: Implement student options menu
+            },
+          ),
+        );
+      },
+    );
+  }
+}
+
+class ScheduleScreen extends StatelessWidget {
+  const ScheduleScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text('Schedule Screen - Coming Soon'),
+    );
+  }
+}
+
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text('Profile Screen - Coming Soon'),
+    );
+  }
+}

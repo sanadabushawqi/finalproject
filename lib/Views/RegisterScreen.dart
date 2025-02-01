@@ -7,6 +7,7 @@ import '../Models/Student.dart';
 import '../Models/User.dart';
 import '../Utils/DB.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'teacherhomepage.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -300,6 +301,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               user.createdDateTime = _CreadtedDateTimeController.text;
                             user.password = _passwordController.text;
                             insertUser(user);
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => teacherHomeScreen()));
                             },
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(double.infinity, 50),
