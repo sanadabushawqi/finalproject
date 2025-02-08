@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'NewStudentScreen.dart';
+import 'newscheduleday.dart';
 
 
 class teacherHomeScreen extends StatefulWidget {
@@ -34,6 +35,7 @@ class _teacherHomeScreen extends State<teacherHomeScreen> {
         ],
       ),
       body: _screens[_currentIndex],
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
@@ -86,13 +88,19 @@ class DashboardScreen extends StatelessWidget {
             crossAxisSpacing: 16,
             mainAxisSpacing: 16,
             children: [
-              _buildActionCard(
+
+              FloatingActionButton(
+              onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => NewStudentScreen()))},
+                child: _buildActionCard(
+
                 context,
-                'Add Student',
-                Icons.person_add,
+                'vacations',
+                Icons.beach_access,
+
                     () {
-                  // TODO: Implement add student
+                  // TODO: Implement vacations
                 },
+              ),
               ),
               _buildActionCard(
                 context,
@@ -116,6 +124,22 @@ class DashboardScreen extends StatelessWidget {
                 Icons.settings,
                     () {
                   // TODO: Implement settings
+                },
+              ),
+              _buildActionCard(
+                context,
+                'tests',
+                Icons.fact_check,
+                    () {
+                  // TODO: Implement tests
+                },
+              ),
+              _buildActionCard(
+                context,
+                'vehicles',
+                Icons.directions_car,
+                    () {
+                  // TODO: Implement vehicles
                 },
               ),
             ],
@@ -151,28 +175,43 @@ class DashboardScreen extends StatelessWidget {
   }
 }
 
+
 class StudentsScreen extends StatelessWidget {
   const StudentsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 10, // Replace with actual student data
-      itemBuilder: (context, index) {
-        return ListTile(
-          leading: const CircleAvatar(
-            child: Icon(Icons.person),
-          ),
-          title: Text('Student ${index + 1}'),
-          subtitle: const Text('Last lesson: 01/02/2025'),
-          trailing: IconButton(
-            icon: const Icon(Icons.more_vert),
-            onPressed: () {
-              // TODO: Implement student options menu
-            },
-          ),
-        );
-      },
+    return Scaffold(  // Added Scaffold
+      body: ListView.builder(
+        itemCount: 10, // Replace with actual student data
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: const CircleAvatar(
+              child: Icon(Icons.person),
+            ),
+            title: Text('Student ${index + 1}'),
+            subtitle: const Text('Last lesson: 01/02/2025'),
+            trailing: IconButton(
+              icon: const Icon(Icons.more_vert),
+              onPressed: () {
+                // TODO: Implement student options menu
+              },
+            ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const NewStudentScreen(),  // Assuming you have this screen
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
+        tooltip: 'Add new student',
+      ),
     );
   }
 }
@@ -182,8 +221,22 @@ class ScheduleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Schedule Screen - Coming Soon'),
+    return Scaffold(
+      body: const Center(
+        child: Text('Schedule Screen - Coming Soon'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const DrivingScheduleScreen(),  // Assuming you have this screen
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
+        tooltip: 'Add new student',
+      ),
     );
   }
 }

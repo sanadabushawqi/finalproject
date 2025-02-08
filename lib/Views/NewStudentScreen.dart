@@ -1,145 +1,184 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/Models/Student.dart';
-import 'package:untitled/Models/Student.dart';
-import 'package:untitled/Utils/Utils.dart';
-import '../Models/Student.dart';
-import '../Models/User.dart';
-import '../Utils/DB.dart';
+import 'package:intl/intl.dart';
 
-
-
-
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key,});
-
+class NewStudentScreen extends StatefulWidget {
+  const NewStudentScreen({Key? key}) : super(key: key);
 
   @override
-  State<RegisterScreen> createState() => RegisterPageState();
+  _NewStudentScreenState createState() => _NewStudentScreenState();
 }
 
-class RegisterPageState extends State<RegisterScreen> {
+class _NewStudentScreenState extends State<NewStudentScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _birthdateController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
-  final TextEditingController _txtEmail = TextEditingController();
-  final TextEditingController _txtPassword = TextEditingController();
-  final TextEditingController _txtFirstName = TextEditingController();
-  final TextEditingController _txtLastName = TextEditingController();
-  final TextEditingController _txtStudentID = TextEditingController();
-  final TextEditingController _txtPhone = TextEditingController();
-  final TextEditingController _txtID = TextEditingController();
-  final TextEditingController _txtBirthDate = TextEditingController();
-
-
-  void insertUserFunc()
-  {
-    if(_txtFirstName.text != "" && _txtEmail.text != "" && _txtPassword.text != "" && _txtLastName.text != "" && _txtID.text != "" && _txtPhone.text != "" && _txtBirthDate.text != "")
-      {
-        var student = new Student();
-        student.firstName = _txtFirstName.text;
-        student.email = _txtEmail.text;
-        student.password = _txtPassword.text;
-        student.lastName = _txtLastName.text;
-        student.ID = _txtID.text;
-        student.phone = _txtPhone.text;
-        student.birthDate = _txtBirthDate.text;
-        inserStudent(student);
-      }
-    else
-      {
-        Utils uti = new Utils();
-        uti.showMyDialog(context, "Required", "כל השדות חובה");
-
-
-      }
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        _birthdateController.text = DateFormat('yyyy-MM-dd').format(picked);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(""),
+        title: const Text('New Student Registration'),
       ),
-      body: Center(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-            Text(
-            'First name',
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextFormField(
+                controller: _firstNameController,
+                decoration: const InputDecoration(
+                  labelText: 'First Name',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.person),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter first name';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _lastNameController,
+                decoration: const InputDecoration(
+                  labelText: 'Last Name',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.person),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter last name';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _idController,
+                decoration: const InputDecoration(
+                  labelText: 'Student ID',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.badge),
+                ),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter student ID';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _birthdateController,
+                decoration: InputDecoration(
+                  labelText: 'Birth Date',
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(Icons.calendar_today),
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.calendar_month),
+                    onPressed: () => _selectDate(context),
+                  ),
+                ),
+                readOnly: true,
+                onTap: () => _selectDate(context),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select birth date';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _phoneController,
+                decoration: const InputDecoration(
+                  labelText: 'Phone Number',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.phone),
+                ),
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter phone number';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.email),
+                ),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter email';
+                  }
+                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                      .hasMatch(value)) {
+                    return 'Please enter a valid email';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    // TODO: Handle form submission
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Processing Data')),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                child: const Text(
+                  'Submit',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            ],
           ),
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'First name',
-            ),
-            controller: _txtFirstName,
-          ),
-          Text(
-            'Email',
-          ),
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: ' Email',
-            ),
-            controller: _txtEmail,
-          ),
-          Text(
-            'password',
-          ),
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: ' password',
-            ),
-            controller: _txtPassword,
-          ),
-          Text(
-            'Last name',
-          ),
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: ' Last name',
-            ),
-            controller: _txtLastName,
-          ),
-
-          Text(
-            'phone',
-          ),
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: ' phone',
-            ),
-            controller: _txtPhone,
-          ),
-          Text(
-            'ID',
-          ),
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: ' ID',
-            ),
-            controller: _txtID,
-          ),
-          Text(
-            'birthDate',
-          ),
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: ' birthDate',
-            ),
-            controller: _txtBirthDate,
-          ),
-              TextButton(onPressed: () {
-
-                insertUserFunc();
-              }, child: Text("register"))
-        ],),
+        ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _idController.dispose();
+    _birthdateController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
+    super.dispose();
   }
 }
