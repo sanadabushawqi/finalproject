@@ -10,11 +10,12 @@ class DrivingScheduleScreen extends StatefulWidget {
 
 class _DrivingScheduleScreenState extends State<DrivingScheduleScreen> {
   DateTime selectedDate = DateTime.now();
-  TimeOfDay selectedTime = TimeOfDay.now();
+  TimeOfDay startTime = TimeOfDay.now();
+  TimeOfDay endTime = TimeOfDay.now();
   final TextEditingController _studentNameController = TextEditingController();
   final TextEditingController _studentIdController = TextEditingController();
 
-  // Sample schedule data - replace with your actual data structure
+  // Updated schedule data structure to include end time
   List<Map<String, dynamic>> scheduleData = [];
 
   Future<void> _selectDate(BuildContext context) async {
@@ -31,14 +32,26 @@ class _DrivingScheduleScreenState extends State<DrivingScheduleScreen> {
     }
   }
 
-  Future<void> _selectTime(BuildContext context) async {
+  Future<void> _selectStartTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: selectedTime,
+      initialTime: startTime,
     );
-    if (picked != null && picked != selectedTime) {
+    if (picked != null && picked != startTime) {
       setState(() {
-        selectedTime = picked;
+        startTime = picked;
+      });
+    }
+  }
+
+  Future<void> _selectEndTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: endTime,
+    );
+    if (picked != null && picked != endTime) {
+      setState(() {
+        endTime = picked;
       });
     }
   }
@@ -51,7 +64,8 @@ class _DrivingScheduleScreenState extends State<DrivingScheduleScreen> {
           'studentName': _studentNameController.text,
           'studentId': _studentIdController.text,
           'date': selectedDate,
-          'time': selectedTime,
+          'startTime': startTime,
+          'endTime': endTime,
         });
       });
       _clearInputs();
@@ -89,20 +103,38 @@ class _DrivingScheduleScreenState extends State<DrivingScheduleScreen> {
                 },
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () async {
-                  final newTime = await showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.fromDateTime(
-                        scheduleData[index]['date']),
-                  );
-                  if (newTime != null) {
-                    setState(() {
-                      scheduleData[index]['time'] = newTime;
-                    });
-                  }
-                },
-                child: const Text('Change Time'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      final newTime = await showTimePicker(
+                        context: context,
+                        initialTime: scheduleData[index]['startTime'],
+                      );
+                      if (newTime != null) {
+                        setState(() {
+                          scheduleData[index]['startTime'] = newTime;
+                        });
+                      }
+                    },
+                    child: const Text('Start Time'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final newTime = await showTimePicker(
+                        context: context,
+                        initialTime: scheduleData[index]['endTime'],
+                      );
+                      if (newTime != null) {
+                        setState(() {
+                          scheduleData[index]['endTime'] = newTime;
+                        });
+                      }
+                    },
+                    child: const Text('End Time'),
+                  ),
+                ],
               ),
             ],
           ),
@@ -177,10 +209,20 @@ class _DrivingScheduleScreenState extends State<DrivingScheduleScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                ElevatedButton.icon(
-                  onPressed: () => _selectTime(context),
-                  icon: const Icon(Icons.access_time),
-                  label: Text('Select Time: ${selectedTime.format(context)}'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () => _selectStartTime(context),
+                      icon: const Icon(Icons.access_time),
+                      label: Text('Start Time: ${startTime.format(context)}'),
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () => _selectEndTime(context),
+                      icon: const Icon(Icons.access_time),
+                      label: Text('End Time: ${endTime.format(context)}'),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
@@ -209,7 +251,7 @@ class _DrivingScheduleScreenState extends State<DrivingScheduleScreen> {
                     title: Text(schedule['studentName']),
                     subtitle: Text(
                       'ID: ${schedule['studentId']}\n'
-                          'Time: ${schedule['time'].format(context)}',
+                          'Time: ${schedule['startTime'].format(context)} - ${schedule['endTime'].format(context)}',
                     ),
                     trailing: IconButton(
                       icon: const Icon(Icons.edit),
