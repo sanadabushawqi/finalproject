@@ -5,6 +5,7 @@ import 'package:untitled/Utils/constants.dart';
 import 'package:untitled/Views/RegisterScreen.dart';
 
 import 'Utils/DB.dart';
+import 'Views/thefirstpage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const MyHomePage(title: ' Home Page'),
+      home:  WelcomePage(),
     );
   }
 }

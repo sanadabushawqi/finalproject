@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'NewStudentScreen.dart';
 import 'newscheduleday.dart';
-
+import 'drivingteacherprofile.dart';
 
 class teacherHomeScreen extends StatefulWidget {
   const teacherHomeScreen({super.key});
@@ -17,7 +17,7 @@ class _teacherHomeScreen extends State<teacherHomeScreen> {
     const DashboardScreen(),
     const StudentsScreen(),
     const ScheduleScreen(),
-    const ProfileScreen(),
+    DrivingTeacherProfile(),
   ];
 
   @override

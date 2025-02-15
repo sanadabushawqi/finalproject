@@ -7,7 +7,10 @@ import '../Models/Student.dart';
 import '../Models/User.dart';
 import '../Utils/DB.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../Utils/clientConfeg.dart';
 import 'teacherhomepage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -106,6 +109,16 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    Future insertUser(BuildContext context, String firstName, String lastName, String email) async {
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? getInfoDeviceSTR = prefs.getString("getInfoDeviceSTR");
+      var url = "users/insertUser.php?firstName=" + firstName + "&lastName=" + lastName + "&userID=" + '11' + "&email=" + email  + getInfoDeviceSTR!;
+      final response = await http.get(Uri.parse(serverPath + url));
+      // print(serverPath + url);
+      setState(() { });
+      Navigator.pop(context);
+    }
     if (_registrationSuccessful) {
       return Scaffold(
         body: Center(
@@ -300,7 +313,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               user.userID = _userIDController.text;
                               user.createdDateTime = _CreadtedDateTimeController.text;
                             user.password = _passwordController.text;
-                            insertUser(user);
+                            insertUser(context,_firstNameController.text,_lastNameController.text, _emailController.text);
                             Navigator.push(context, MaterialPageRoute(builder: (context) => teacherHomeScreen()));
                             },
                           style: ElevatedButton.styleFrom(

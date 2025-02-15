@@ -19,18 +19,7 @@ class DrivingTeacherProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Teacher Profile'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              // Navigate to settings
-              print('Navigate to settings');
-            },
-          ),
-        ],
-      ),
+
       body: SingleChildScrollView(
         child: Column(
           children: [

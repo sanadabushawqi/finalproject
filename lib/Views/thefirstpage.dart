@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'RegisterScreen.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -75,12 +76,15 @@ class WelcomePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text(
-                        "Start as Teacher",
-                        style: TextStyle(
+                      child: TextButton(
+                        onPressed: () => {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()))
+                        },
+                        child: const Text("Start as Teacher",
+                          style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                        ),
+                        )),
                       ),
                     ),
                     const SizedBox(height: 16),
