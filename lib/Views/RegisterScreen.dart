@@ -109,16 +109,20 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    Future insertUser(BuildContext context, String firstName, String lastName, String email) async {
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? getInfoDeviceSTR = prefs.getString("getInfoDeviceSTR");
-      var url = "users/insertUser.php?firstName=" + firstName + "&lastName=" + lastName + "&userID=" + '11' + "&email=" + email  + getInfoDeviceSTR!;
+
+    Future insertUser(BuildContext context, User us) async {
+
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // String? getInfoDeviceSTR = prefs.getString("getInfoDeviceSTR");
+      var url = "users/insertUser.php?firstName=" + us.firstName + "&lastName=" + us.lastName + "&userID=" + '11' + "&email=" + us.email;
       final response = await http.get(Uri.parse(serverPath + url));
-      // print(serverPath + url);
+      print(serverPath + url);
       setState(() { });
       Navigator.pop(context);
     }
+
+
     if (_registrationSuccessful) {
       return Scaffold(
         body: Center(
@@ -313,8 +317,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               user.userID = _userIDController.text;
                               user.createdDateTime = _CreadtedDateTimeController.text;
                             user.password = _passwordController.text;
-                            insertUser(context,_firstNameController.text,_lastNameController.text, _emailController.text);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => teacherHomeScreen()));
+                            print("dfdgfgd");
+                            insertUser(context, user);
+                            // Navigator.push(context, MaterialPageRoute(builder: (context) => teacherHomeScreen()));
                             },
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(double.infinity, 50),

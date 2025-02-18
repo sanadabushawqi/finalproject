@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'NewStudentScreen.dart';
 import 'newscheduleday.dart';
 import 'drivingteacherprofile.dart';
+import 'teststimepages.dart';
 
 class teacherHomeScreen extends StatefulWidget {
   const teacherHomeScreen({super.key});
@@ -126,7 +127,10 @@ class DashboardScreen extends StatelessWidget {
                   // TODO: Implement settings
                 },
               ),
-              _buildActionCard(
+                 FloatingActionButton(
+                 onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => DrivingTestRegistration()))},
+                  child: _buildActionCard(
+
                 context,
                 'tests',
                 Icons.fact_check,
@@ -134,6 +138,7 @@ class DashboardScreen extends StatelessWidget {
                   // TODO: Implement tests
                 },
               ),
+    ),
               _buildActionCard(
                 context,
                 'vehicles',
