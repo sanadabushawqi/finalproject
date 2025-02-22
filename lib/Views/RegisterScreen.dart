@@ -307,7 +307,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         const SizedBox(height: 20),
 
                         ElevatedButton(
-                          onPressed:() {
+                          onPressed:() async {
                               _isSubmitting ? null : _submitForm;
                               //dasdasdadsfsdgghfdg
                             var user = new User();
@@ -318,8 +318,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               user.createdDateTime = _CreadtedDateTimeController.text;
                             user.password = _passwordController.text;
                             print("dfdgfgd");
-                            insertUser(context, user);
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => teacherHomeScreen()));
+                            await insertUser(context, user);
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => teacherHomeScreen()));
                             },
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(double.infinity, 50),
