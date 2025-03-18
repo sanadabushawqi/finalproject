@@ -3,6 +3,11 @@ import 'NewStudentScreen.dart';
 import 'newscheduleday.dart';
 import 'drivingteacherprofile.dart';
 import 'teststimepages.dart';
+import 'viewreportspage.dart';
+import 'vehiclespage.dart';
+import 'settingspage.dart';
+import 'vacationspage.dart';
+import 'kilometers.dart';
 
 class teacherHomeScreen extends StatefulWidget {
   const teacherHomeScreen({super.key});
@@ -91,7 +96,7 @@ class DashboardScreen extends StatelessWidget {
             children: [
 
               FloatingActionButton(
-              onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => NewStudentScreen()))},
+              onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => DrivingInstructorVacationsPage(instructorId: '',)))},
                 child: _buildActionCard(
 
                 context,
@@ -103,22 +108,31 @@ class DashboardScreen extends StatelessWidget {
                 },
               ),
               ),
+              FloatingActionButton(
+                onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => DrivingInstructorReportsPage(instructorId: '',)))},
+                child: _buildActionCard(
+                  context,
+                  'View Reports',
+                  Icons.bar_chart,
+                      () {
+                    // TODO: Implement reports
+                  },
+                ),
+              ),
+              FloatingActionButton(
+                onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => DrivingInstructorReportsPage(instructorId: '',)))},
+                child:
               _buildActionCard(
                 context,
-                'Schedule Lesson',
+                'kilometers',
                 Icons.add_circle,
                     () {
                   // TODO: Implement schedule lesson
                 },
-              ),
-              _buildActionCard(
-                context,
-                'View Reports',
-                Icons.bar_chart,
-                    () {
-                  // TODO: Implement reports
-                },
-              ),
+              ),),
+              FloatingActionButton(
+                onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => DrivingInstructorSettingsPage(instructorId: '',)))},
+                child:
               _buildActionCard(
                 context,
                 'Settings',
@@ -126,7 +140,7 @@ class DashboardScreen extends StatelessWidget {
                     () {
                   // TODO: Implement settings
                 },
-              ),
+              ),),
                  FloatingActionButton(
                  onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => DrivingTestRegistration()))},
                   child: _buildActionCard(
@@ -139,6 +153,9 @@ class DashboardScreen extends StatelessWidget {
                 },
               ),
     ),
+              FloatingActionButton(
+                onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => DrivingInstructorVehiclesPage(instructorId: '',)))},
+                child:
               _buildActionCard(
                 context,
                 'vehicles',
@@ -146,7 +163,7 @@ class DashboardScreen extends StatelessWidget {
                     () {
                   // TODO: Implement vehicles
                 },
-              ),
+              ),),
             ],
           ),
         ],
