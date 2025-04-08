@@ -8,6 +8,7 @@ import '../Models/User.dart';
 import '../Utils/DB.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../Utils/clientConfeg.dart';
+import 'LOGINPAGE.dart';
 import 'teacherhomepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -111,15 +112,31 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
 
 
-    Future insertUser(BuildContext context, User us) async {
+    Future insertUser(BuildContext context) async {
+
+      var user = new User();
+      user.firstName = _firstNameController.text;
+      user.lastName = _lastNameController.text;
+      user.email = _emailController.text;
+      user.userID = _userIDController.text;
+      user.createdDateTime = _CreadtedDateTimeController.text;
+      user.password = _passwordController.text;
+      print("dfdgfgd");
+
+
 
       // SharedPreferences prefs = await SharedPreferences.getInstance();
       // String? getInfoDeviceSTR = prefs.getString("getInfoDeviceSTR");
-      var url = "users/insertUser.php?firstName=" + us.firstName + "&lastName=" + us.lastName + "&userID=" + '11' + "&email=" + us.email;
+      var url = "users/insertUser.php?firstName=" + user.firstName + "&lastName=" + user.lastName + "&userID=" + '11' + "&email=" + user.email;
       final response = await http.get(Uri.parse(serverPath + url));
       print(serverPath + url);
-      setState(() { });
-      Navigator.pop(context);
+      // setState(() {
+
+      // });
+      // Navigator.pop(context);
+
+      Navigator.push(context, MaterialPageRoute(builder: (context) => teacherHomeScreen()));
+
     }
 
 
@@ -264,7 +281,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         TextFormField(
                           controller: _CreadtedDateTimeController,
                           decoration: InputDecoration(
-                            labelText: 'Creadted Date Time',
+                            labelText: 'Created Date Time',
                             prefixIcon: const Icon(Icons.person),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -309,17 +326,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         ElevatedButton(
                           onPressed:() async {
                               _isSubmitting ? null : _submitForm;
-                              //dasdasdadsfsdgghfdg
-                            var user = new User();
-                            user.firstName = _firstNameController.text;
-                              user.lastName = _lastNameController.text;
-                              user.email = _emailController.text;
-                              user.userID = _userIDController.text;
-                              user.createdDateTime = _CreadtedDateTimeController.text;
-                            user.password = _passwordController.text;
-                            print("dfdgfgd");
-                            await insertUser(context, user);
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => teacherHomeScreen()));
+
+                              insertUser(context);
+
                             },
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(double.infinity, 50),
@@ -344,6 +353,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             TextButton(
                               onPressed: () {
                                 // Navigate to login page
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
                               },
                               child: const Text('Log In'),
                             ),
