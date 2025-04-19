@@ -127,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
       // SharedPreferences prefs = await SharedPreferences.getInstance();
       // String? getInfoDeviceSTR = prefs.getString("getInfoDeviceSTR");
-      var url = "users/insertUser.php?firstName=" + user.firstName + "&lastName=" + user.lastName + "&userID=" + '11' + "&email=" + user.email;
+      var url = "users/insertUser.php?firstName=" + user.firstName + "&lastName=" + user.lastName + "&userID=" + '11' + "&email=" + user.email+ "&password="+user.password;
       final response = await http.get(Uri.parse(serverPath + url));
       print(serverPath + url);
       // setState(() {
