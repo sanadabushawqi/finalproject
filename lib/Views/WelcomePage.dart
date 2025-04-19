@@ -110,31 +110,31 @@ class WelcomePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     // Student Button
-                    ElevatedButton(
-                      onPressed: () {
-                        // Navigate to student page
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue.shade900,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 48,
-                          vertical: 16,
-                        ),
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        side: const BorderSide(color: Colors.white, width: 2),
-                      ),
-                      child: const Text(
-                        "Start as Student",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     // Navigate to student page
+                    //   },
+                    //   style: ElevatedButton.styleFrom(
+                    //     backgroundColor: Colors.blue.shade900,
+                    //     foregroundColor: Colors.white,
+                    //     padding: const EdgeInsets.symmetric(
+                    //       horizontal: 48,
+                    //       vertical: 16,
+                    //     ),
+                    //     minimumSize: const Size(double.infinity, 50),
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(12),
+                    //     ),
+                    //     side: const BorderSide(color: Colors.white, width: 2),
+                    //   ),
+                    //   child: const Text(
+                    //     "Start as Student",
+                    //     style: TextStyle(
+                    //       fontSize: 18,
+                    //       fontWeight: FontWeight.bold,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

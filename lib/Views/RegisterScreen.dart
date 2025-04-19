@@ -8,8 +8,8 @@ import '../Models/User.dart';
 import '../Utils/DB.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../Utils/clientConfeg.dart';
-import 'LOGINPAGE.dart';
-import 'teacherhomepage.dart';
+import 'LoginPage.dart';
+import 'StudentListPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 

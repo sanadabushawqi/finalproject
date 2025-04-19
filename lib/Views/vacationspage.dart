@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'NewVacationPage.dart';
+
 class DrivingInstructorVacationsPage extends StatefulWidget {
   final String instructorId;
 
@@ -159,19 +161,15 @@ class _DrivingInstructorVacationsPageState
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Here you can request a new vacation
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RequestVacationPage(
-                instructorId: widget.instructorId,
-                remainingDays: _remainingVacationDays,
-              ),
+              builder: (context) => const NewVacationScreen(),  // Assuming you have this screen
             ),
-          ).then((_) => _fetchVacations());
+          );
         },
         child: const Icon(Icons.add),
-        tooltip: 'Request Time Off',
+        tooltip: 'Add new student',
       ),
     );
   }
@@ -427,12 +425,7 @@ class RequestVacationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Request Time Off'),
-      ),
-      body: const Center(
-        child: Text('Request Time Off Form'),
-      ),
+
     );
   }
 }

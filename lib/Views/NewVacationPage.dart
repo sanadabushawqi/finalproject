@@ -4,14 +4,14 @@ import 'package:http/http.dart' as http;
 import '../Models/Student.dart';
 import '../Utils/clientConfeg.dart';
 
-class NewStudentScreen extends StatefulWidget {
-  const NewStudentScreen({Key? key}) : super(key: key);
+class NewVacationScreen extends StatefulWidget {
+  const NewVacationScreen({Key? key}) : super(key: key);
 
   @override
-  _NewStudentScreenState createState() => _NewStudentScreenState();
+  _NewVacationScreenState createState() => _NewVacationScreenState();
 }
 
-class _NewStudentScreenState extends State<NewStudentScreen> {
+class _NewVacationScreenState extends State<NewVacationScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -146,9 +146,9 @@ class _NewStudentScreenState extends State<NewStudentScreen> {
 
                   print("dfdgfgd");
 
-                var url = "students/insertstudent.php?firstName=" + student.firstName + "&lastName=" + student.lastName + "&email=" + student.email+ "&birthDate=" + student.birthDate + "&phoneNumber=" + student.phoneNumber;
-                final response = await http.get(Uri.parse(serverPath + url));
-                print(serverPath + url);
+                  var url = "students/insertstudent.php?firstName=" + student.firstName + "&lastName=" + student.lastName + "&email=" + student.email+ "&birthDate=" + student.birthDate + "&phoneNumber=" + student.phoneNumber;
+                  final response = await http.get(Uri.parse(serverPath + url));
+                  print(serverPath + url);
                   if (_formKey.currentState!.validate()) {
                     // TODO: Handle form submission
                     ScaffoldMessenger.of(context).showSnackBar(

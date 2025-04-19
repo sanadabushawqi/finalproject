@@ -2,7 +2,7 @@ class Student{
   String studentID;
   String firstName;
   String lastName;
-  String phone;
+  String phoneNumber;
   String ID;
   String birthDate;
   String email;
@@ -12,7 +12,7 @@ class Student{
     this.studentID="",
     this.firstName="",
     this.lastName="",
-    this.phone="",
+    this.phoneNumber="",
     this.ID="",
     this.birthDate="",
     this.email="",
@@ -23,7 +23,7 @@ class Student{
     studentID:json["studentID"],
     firstName:json["firstName"],
     lastName:json[" lastName"],
-    phone:json["phone"],
+    phoneNumber:json["phone"],
     ID:json["ID"],
     birthDate:json["birthDate"],
     email:json["email"],
@@ -34,7 +34,7 @@ class Student{
     "studentID":studentID,
     "firstName":firstName,
     "lastName": lastName,
-    "phone":phone,
+    "phone":phoneNumber,
     "ID":ID,
     "birthDate":birthDate,
     "email":email,

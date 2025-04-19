@@ -205,7 +205,7 @@ class StudentsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(  // Added Scaffold
       body: ListView.builder(
-        itemCount: 10, // Replace with actual student data
+        itemCount: 5, // Replace with actual student data
         itemBuilder: (context, index) {
           return ListTile(
             leading: const CircleAvatar(
