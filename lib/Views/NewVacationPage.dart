@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import '../Models/Student.dart';
+import '../Models/Vacation.dart';
 import '../Utils/clientConfeg.dart';
 
 class NewVacationScreen extends StatefulWidget {
@@ -13,11 +13,10 @@ class NewVacationScreen extends StatefulWidget {
 
 class _NewVacationScreenState extends State<NewVacationScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _birthDateController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _vacationNameController = TextEditingController();
+  final TextEditingController _startDateController = TextEditingController();
+  final TextEditingController _endDateController = TextEditingController();
+  final TextEditingController _vacationLengthController = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -26,18 +25,18 @@ class _NewVacationScreenState extends State<NewVacationScreen> {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
-    if (picked != null) {
-      setState(() {
-        _birthDateController.text = DateFormat('yyyy-MM-dd').format(picked);
-      });
-    }
+    // if (picked != null) {
+    //   setState(() {
+    //     _birthDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+    //   });
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Student Registration'),
+        title: const Text('New vaacation Registration'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -47,30 +46,30 @@ class _NewVacationScreenState extends State<NewVacationScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
-                controller: _firstNameController,
+                controller: _vacationNameController,
                 decoration: const InputDecoration(
-                  labelText: 'firstName',
+                  labelText: 'vacationName',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.person),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter first name';
+                    return 'Please enter vacation name';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 16),
               TextFormField(
-                controller: _lastNameController,
+                controller: _startDateController,
                 decoration: const InputDecoration(
-                  labelText: 'lastName',
+                  labelText: 'startDate ',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.person),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter last name';
+                    return 'Please enter startDate ';
                   }
                   return null;
                 },
@@ -79,9 +78,9 @@ class _NewVacationScreenState extends State<NewVacationScreen> {
 
               const SizedBox(height: 16),
               TextFormField(
-                controller: _birthDateController,
+                controller: _endDateController,
                 decoration: InputDecoration(
-                  labelText: 'birthDate',
+                  labelText: 'endDate ',
                   border: const OutlineInputBorder(),
                   prefixIcon: const Icon(Icons.calendar_today),
                   suffixIcon: IconButton(
@@ -91,62 +90,42 @@ class _NewVacationScreenState extends State<NewVacationScreen> {
                 ),
                 readOnly: true,
                 onTap: () => _selectDate(context),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select birth date';
-                  }
-                  return null;
-                },
+                // validator: (value) {
+                //   if (value == null || value.isEmpty) {
+                //     return 'Please select endDate ';
+                //   }
+                //   return null;
+                // },
               ),
               const SizedBox(height: 16),
               TextFormField(
-                controller: _phoneNumberController,
+                controller: _vacationLengthController,
                 decoration: const InputDecoration(
-                  labelText: 'phoneNumber',
+                  labelText: 'vacationLength ',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.phone),
                 ),
                 keyboardType: TextInputType.phone,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter phone number';
+                    return 'Please enter vacationLength ';
                   }
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'email',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.email),
-                ),
-                keyboardType: TextInputType.emailAddress,
-                // validator: (value) {
-                //   if (value == null || value.isEmpty) {
-                //     return 'Please enter email';
-                //   }
-                //   if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                //       .hasMatch(value)) {
-                //     return 'Please enter a valid email';
-                //   }
-                //   return null;
-                // },
-              ),
+
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () async {
-                  var student = new Student();
-                  student.firstName = _firstNameController.text;
-                  student.lastName = _lastNameController.text;
-                  student.email = _emailController.text;
-                  student.birthDate = _birthDateController.text;
-                  student.phoneNumber = _phoneNumberController.text;
+                  var vacation = new Vacation();
+                  vacation.vacationName  = _vacationNameController.text;
+                  vacation.startDate  = _startDateController.text;
+                  vacation.endDate  = _endDateController.text;
+                  vacation.vacationLength  = _vacationLengthController.text;
 
                   print("dfdgfgd");
 
-                  var url = "students/insertstudent.php?firstName=" + student.firstName + "&lastName=" + student.lastName + "&email=" + student.email+ "&birthDate=" + student.birthDate + "&phoneNumber=" + student.phoneNumber;
+                  var url = "vacations/insertvacation.php?vacationName =" + vacation.vacationName  + "&startDate =" + vacation.startDate  + "&endDate =" + vacation.endDate + "&vacationLength =" + vacation.vacationLength ;
                   final response = await http.get(Uri.parse(serverPath + url));
                   print(serverPath + url);
                   if (_formKey.currentState!.validate()) {
@@ -173,11 +152,10 @@ class _NewVacationScreenState extends State<NewVacationScreen> {
 
   @override
   void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _birthDateController.dispose();
-    _phoneNumberController.dispose();
-    _emailController.dispose();
+    _vacationNameController.dispose();
+    _startDateController.dispose();
+    _endDateController.dispose();
+    _vacationLengthController.dispose();
     super.dispose();
   }
 }

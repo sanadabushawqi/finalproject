@@ -464,7 +464,7 @@ enum VacationStatus {
 // Vacation Data Model
 class Vacation {
   final String id;
-  final DateTime startDate;
+  late final DateTime startDate;
   final DateTime endDate;
   final VacationStatus status;
   final String reason;
@@ -482,4 +482,6 @@ class Vacation {
     required this.approvedBy,
     this.approvedOn,
   });
+
+  set vacationName(String vacationName) {}
 }
