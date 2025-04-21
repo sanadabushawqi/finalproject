@@ -15,18 +15,18 @@ class Vacation{
   });
 
   factory Vacation.fromJson(Map<String, dynamic> json)=>Vacation(
-    vacationName :json["userID"],
-    startDate :json["firstName"],
-    endDate :json[" lastName"],
-    vacationLength :json["password"],
+    vacationName :json["vacationName"],
+    startDate :json["startDate"],
+    endDate :json[" endDate"],
+    vacationLength :json["vacationLength"],
 
   );
 
   Map<String,dynamic>tojson()=>{
-    "userID":vacationName ,
-    "firstName":startDate ,
-    "lastName":endDate ,
-    "password":vacationLength ,
+    "vacationName":vacationName ,
+    "startDate":startDate ,
+    "endDate":endDate ,
+    "vacationLength":vacationLength ,
 
   };
 }

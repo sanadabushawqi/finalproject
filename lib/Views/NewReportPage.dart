@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import '../Models/Schedule.dart';
+import 'package:untitled/Models/Report.dart';
+import '../Models/Report.dart';
 import '../Utils/clientConfeg.dart';
 
-class newschedulelesson extends StatefulWidget {
-  const newschedulelesson({Key? key}) : super(key: key);
+
+class Newreportpage extends StatefulWidget {
+  const Newreportpage({Key? key, required String instructorId}) : super(key: key);
 
   @override
-  _newschedulelessonState createState() => _newschedulelessonState();
+  _NewreportpageState createState() => _NewreportpageState();
 }
 
-class _newschedulelessonState extends State<newschedulelesson> {
+class _NewreportpageState extends State<Newreportpage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _studentNameController = TextEditingController();
   final TextEditingController _studentIDController = TextEditingController();
-  final TextEditingController _startTimeController = TextEditingController();
-  final TextEditingController _endTimeController = TextEditingController();
+  final TextEditingController _lessonDurationController = TextEditingController();
+  final TextEditingController _lessonLerningController = TextEditingController();
+  final TextEditingController _notesController = TextEditingController();
+  final TextEditingController _evaluationController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -36,7 +41,7 @@ class _newschedulelessonState extends State<newschedulelesson> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New schedule lesson'),
+        title: const Text('New report Registration'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -78,42 +83,82 @@ class _newschedulelessonState extends State<newschedulelesson> {
 
               const SizedBox(height: 16),
               TextFormField(
-                controller: _startTimeController,
+                controller: _lessonDurationController,
                 decoration: InputDecoration(
-                  labelText: 'startTime',
+                  labelText: 'lessonDuration',
                   border: const OutlineInputBorder(),
-                  prefixIcon: const Icon(Icons.calendar_today),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.calendar_month),
-                    onPressed: () => _selectDate(context),
-                  ),
+                  // prefixIcon: const Icon(Icons.calendar_today),
+                  // suffixIcon: IconButton(
+                  //   // icon: const Icon(Icons.calendar_month),
+                  //   onPressed: () => _selectDate(context),
+                  // ),
                 ),
-                // readOnly: true,
-                // onTap: () => _selectDate(context),
+                readOnly: true,
+                onTap: () => _selectDate(context),
                 // validator: (value) {
                 //   if (value == null || value.isEmpty) {
-                //     return 'Please select start time';
+                //     return 'Please enter lesson duration';
                 //   }
                 //   return null;
                 // },
               ),
               const SizedBox(height: 16),
               TextFormField(
-                controller: _endTimeController,
+                controller: _lessonLerningController,
                 decoration: const InputDecoration(
-                  labelText: 'endtime',
+                  labelText: 'lessonlerning',
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.phone),
+                  // prefixIcon: Icon(Icons.phone),
                 ),
                 keyboardType: TextInputType.phone,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter end time';
+                    return 'Please enter lesson lerning';
                   }
                   return null;
                 },
               ),
-
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _notesController,
+                decoration: const InputDecoration(
+                  labelText: 'notes',
+                  border: OutlineInputBorder(),
+                  // prefixIcon: Icon(Icons.phone),
+                ),
+                // keyboardType: TextInputType.phone,
+                // validator: (value) {
+                //   if (value == null || value.isEmpty) {
+                //     return 'Please enter lesson lerning';
+                //   }
+                //   return null;
+                // },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _evaluationController,
+                decoration: const InputDecoration(
+                  labelText: 'evaluation',
+                  border: OutlineInputBorder(),
+                  // prefixIcon: Icon(Icons.phone),
+                ),
+                // keyboardType: TextInputType.phone,
+                // validator: (value) {
+                //   if (value == null || value.isEmpty) {
+                //     return 'Please enter lesson lerning';
+                //   }
+                //   return null;
+                // },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _dateController,
+                decoration: const InputDecoration(
+                  labelText: 'date',
+                  border: OutlineInputBorder(),
+                  // prefixIcon: Icon(Icons.email),
+                ),
+                // keyboardType: TextInputType.emailAddress,
                 // validator: (value) {
                 //   if (value == null || value.isEmpty) {
                 //     return 'Please enter email';
@@ -124,19 +169,22 @@ class _newschedulelessonState extends State<newschedulelesson> {
                 //   }
                 //   return null;
                 // },
-
+              ),
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () async {
-                  var schedule = new Schedule();
-                  schedule.studentName = _studentNameController.text;
-                  schedule.studentID = _studentIDController.text;
-                  schedule.startTime = _startTimeController.text;
-                  schedule.endTime = _endTimeController.text;
+                  var report = new Report();
+                  report.studentName = _studentNameController.text;
+                  report.studentID = _studentIDController.text;
+                  report.lessonDuration = _lessonDurationController.text;
+                  report.lessonLerning = _lessonLerningController.text;
+                  report.notes = _notesController.text;
+                  report.evaluation = _evaluationController.text;
+                  report.date = _dateController.text;
 
                   print("dfdgfgd");
 
-                  var url = "schedules/insertschedule.php?studentName=" + schedule.studentName + "&studentID=" + schedule.studentID + "&startTime=" + schedule.startTime+ "&endtime=" + schedule.endTime;
+                  var url = "reports/insertreport.php?studentName=" + report.studentName + "&studentID=" + report.studentID + "&lessonDuration=" + report.lessonDuration+ "&lessonLerning=" + report.lessonLerning + "&notes=" + report.notes+ "&evaluation=" + report.evaluation+ "&date=" + report.date;
                   final response = await http.get(Uri.parse(serverPath + url));
                   print(serverPath + url);
                   if (_formKey.currentState!.validate()) {
@@ -165,8 +213,12 @@ class _newschedulelessonState extends State<newschedulelesson> {
   void dispose() {
     _studentNameController.dispose();
     _studentIDController.dispose();
-    _startTimeController.dispose();
-    _endTimeController.dispose();
+    _lessonDurationController.dispose();
+    _lessonLerningController.dispose();
+    _notesController.dispose();
+    _evaluationController.dispose();
+    _dateController.dispose();
+
     super.dispose();
   }
 }

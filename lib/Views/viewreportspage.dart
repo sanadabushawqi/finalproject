@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'NewReportPage.dart';
 class DrivingInstructorReportsPage extends StatefulWidget {
   final String instructorId;
 
@@ -155,7 +155,7 @@ class _DrivingInstructorReportsPageState
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddReportPage(instructorId: widget.instructorId),
+              builder: (context) => Newreportpage(instructorId: widget.instructorId),
             ),
           ).then((_) => _fetchReports());
         },

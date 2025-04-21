@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'NewStudentScreen.dart';
-import 'newscheduleday.dart';
 import 'drivingteacherprofile.dart';
+import 'newschedulelesson.dart';
 import 'teststimepages.dart';
 import 'viewreportspage.dart';
 import 'vehiclespage.dart';
@@ -252,7 +252,7 @@ class ScheduleScreen extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const DrivingScheduleScreen(),  // Assuming you have this screen
+              builder: (context) => const newschedulelesson(),  // Assuming you have this screen
             ),
           );
         },
