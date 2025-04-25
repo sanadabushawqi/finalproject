@@ -1,5 +1,5 @@
 class Schedule{
-  String studentName ;
+  String teacherID ;
   String studentID  ;
   String startTime  ;
   String endTime  ;
@@ -7,7 +7,7 @@ class Schedule{
 
 
   Schedule({
-    this.studentName  ="",
+    this.teacherID  ="",
     this.studentID  ="",
     this.startTime  ="",
     this.endTime  ="",
@@ -15,7 +15,7 @@ class Schedule{
   });
 
   factory Schedule.fromJson(Map<String, dynamic> json)=>Schedule(
-    studentName  :json["studentName "],
+    teacherID  :json["teacherID "],
     studentID  :json["studentID "],
     startTime  :json[" startTime "],
     endTime  :json["endTime "],
@@ -23,7 +23,7 @@ class Schedule{
   );
 
   Map<String,dynamic>tojson()=>{
-    "studentName ":studentName  ,
+    "teacherID ":teacherID  ,
     "studentID ":studentID  ,
     "startTime ":startTime  ,
     "endTime ":endTime  ,

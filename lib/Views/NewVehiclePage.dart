@@ -15,7 +15,6 @@ class newvehiclepage extends StatefulWidget {
 class _newvehiclepageState extends State<newvehiclepage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _vehicleNameController = TextEditingController();
-  final TextEditingController _vehicleIDController = TextEditingController();
   final TextEditingController _vehicleKiloController = TextEditingController();
   final TextEditingController _vehicleMaintenanceController = TextEditingController();
 
@@ -60,21 +59,7 @@ class _newvehiclepageState extends State<newvehiclepage> {
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _vehicleIDController,
-                decoration: const InputDecoration(
-                  labelText: 'vehicleID ',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter vehicle ID ';
-                  }
-                  return null;
-                },
-              ),
+
               const SizedBox(height: 16),
 
               const SizedBox(height: 16),
@@ -120,13 +105,12 @@ class _newvehiclepageState extends State<newvehiclepage> {
                 onPressed: () async {
                   var vehicle = new Vehicle();
                   vehicle.vehicleName	  = _vehicleNameController.text;
-                  vehicle.vehicleID  = _vehicleIDController.text;
                   vehicle.vehicleKilo  = _vehicleKiloController.text;
                   vehicle.vehicleMaintenance  = _vehicleMaintenanceController.text;
 
                   print("dfdgfgd");
 
-                  var url = "vehicles/insertvehicle.php?vehicleName	 =" + vehicle.vehicleName	  + "&vehicleID =" + vehicle.vehicleID  + "&vehicleKilo =" + vehicle.vehicleKilo + "&vehicleMaintenance =" + vehicle.vehicleMaintenance ;
+                  var url = "vehicles/insertvehicle.php?vehicleName	 =" + vehicle.vehicleName	  +  "&vehicleKilo =" + vehicle.vehicleKilo + "&vehicleMaintenance =" + vehicle.vehicleMaintenance ;
                   final response = await http.get(Uri.parse(serverPath + url));
                   print(serverPath + url);
                   if (_formKey.currentState!.validate()) {
@@ -154,7 +138,6 @@ class _newvehiclepageState extends State<newvehiclepage> {
   @override
   void dispose() {
     _vehicleNameController.dispose();
-    _vehicleIDController.dispose();
     _vehicleKiloController.dispose();
     _vehicleMaintenanceController.dispose();
     super.dispose();

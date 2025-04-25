@@ -13,7 +13,7 @@ class newschedulelesson extends StatefulWidget {
 
 class _newschedulelessonState extends State<newschedulelesson> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _studentNameController = TextEditingController();
+  final TextEditingController _teacherIDController = TextEditingController();
   final TextEditingController _studentIDController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
   final TextEditingController _endTimeController = TextEditingController();
@@ -46,15 +46,15 @@ class _newschedulelessonState extends State<newschedulelesson> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
-                controller: _studentNameController,
+                controller: _teacherIDController,
                 decoration: const InputDecoration(
-                  labelText: 'studentName',
+                  labelText: 'teacherID',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.person),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter student name';
+                    return 'Please enter teacherID';
                   }
                   return null;
                 },
@@ -129,14 +129,14 @@ class _newschedulelessonState extends State<newschedulelesson> {
               ElevatedButton(
                 onPressed: () async {
                   var schedule = new Schedule();
-                  schedule.studentName = _studentNameController.text;
+                  schedule.teacherID = _teacherIDController.text;
                   schedule.studentID = _studentIDController.text;
                   schedule.startTime = _startTimeController.text;
                   schedule.endTime = _endTimeController.text;
 
                   print("dfdgfgd");
 
-                  var url = "schedules/insertschedule.php?studentName=" + schedule.studentName + "&studentID=" + schedule.studentID + "&startTime=" + schedule.startTime+ "&endtime=" + schedule.endTime;
+                  var url = "schedules/insertschedule.php?teacherID=" + schedule.teacherID + "&studentID=" + schedule.studentID + "&startTime=" + schedule.startTime+ "&endtime=" + schedule.endTime;
                   final response = await http.get(Uri.parse(serverPath + url));
                   print(serverPath + url);
                   if (_formKey.currentState!.validate()) {
@@ -163,7 +163,7 @@ class _newschedulelessonState extends State<newschedulelesson> {
 
   @override
   void dispose() {
-    _studentNameController.dispose();
+    _teacherIDController.dispose();
     _studentIDController.dispose();
     _startTimeController.dispose();
     _endTimeController.dispose();

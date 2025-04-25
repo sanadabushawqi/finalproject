@@ -16,7 +16,6 @@ class _NewVacationScreenState extends State<NewVacationScreen> {
   final TextEditingController _vacationNameController = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
-  final TextEditingController _vacationLengthController = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -97,22 +96,7 @@ class _NewVacationScreenState extends State<NewVacationScreen> {
                 //   return null;
                 // },
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _vacationLengthController,
-                decoration: const InputDecoration(
-                  labelText: 'vacationLength ',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.phone),
-                ),
-                keyboardType: TextInputType.phone,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter vacationLength ';
-                  }
-                  return null;
-                },
-              ),
+
 
               const SizedBox(height: 24),
               ElevatedButton(
@@ -121,11 +105,10 @@ class _NewVacationScreenState extends State<NewVacationScreen> {
                   vacation.vacationName  = _vacationNameController.text;
                   vacation.startDate  = _startDateController.text;
                   vacation.endDate  = _endDateController.text;
-                  vacation.vacationLength  = _vacationLengthController.text;
 
                   print("dfdgfgd");
 
-                  var url = "vacations/insertvacation.php?vacationName =" + vacation.vacationName  + "&startDate =" + vacation.startDate  + "&endDate =" + vacation.endDate + "&vacationLength =" + vacation.vacationLength ;
+                  var url = "vacations/insertvacation.php?vacationName =" + vacation.vacationName  + "&startDate =" + vacation.startDate  + "&endDate =" + vacation.endDate  ;
                   final response = await http.get(Uri.parse(serverPath + url));
                   print(serverPath + url);
                   if (_formKey.currentState!.validate()) {
@@ -155,7 +138,6 @@ class _NewVacationScreenState extends State<NewVacationScreen> {
     _vacationNameController.dispose();
     _startDateController.dispose();
     _endDateController.dispose();
-    _vacationLengthController.dispose();
     super.dispose();
   }
 }

@@ -15,7 +15,7 @@ class newkilometerpage extends StatefulWidget {
 
 class _newkilometerpageState extends State<newkilometerpage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _vehicleNameController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
   final TextEditingController _vehicleIDController = TextEditingController();
   final TextEditingController _startKiloController = TextEditingController();
   final TextEditingController _endKiloController = TextEditingController();
@@ -48,15 +48,15 @@ class _newkilometerpageState extends State<newkilometerpage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
-                controller: _vehicleNameController,
+                controller: _dateController,
                 decoration: const InputDecoration(
-                  labelText: 'vehicleName	',
+                  labelText: 'date	',
                   border: OutlineInputBorder(),
                   // prefixIcon: Icon(Icons.person),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter vehicle name';
+                    return 'Please enter date';
                   }
                   return null;
                 },
@@ -120,14 +120,14 @@ class _newkilometerpageState extends State<newkilometerpage> {
               ElevatedButton(
                 onPressed: () async {
                   var kilometer = new Kilometer();
-                  kilometer.vehicleName	  = _vehicleNameController.text;
+                  kilometer.date	  = _dateController.text;
                   kilometer.vehicleID  = _vehicleIDController.text;
                   kilometer.startKilo  = _startKiloController.text;
                   kilometer.endKilo  = _endKiloController.text;
 
                   print("dfdgfgd");
 
-                  var url = "kilometers/insertkilometer.php?vehicleName	 =" + kilometer.vehicleName	  + "&vehicleID =" + kilometer.vehicleID  + "&startKilo =" + kilometer.startKilo + "&endKilo =" + kilometer.endKilo ;
+                  var url = "kilometers/insertkilometer.php?date	 =" + kilometer.date	  + "&vehicleID =" + kilometer.vehicleID  + "&startKilo =" + kilometer.startKilo + "&endKilo =" + kilometer.endKilo ;
                   final response = await http.get(Uri.parse(serverPath + url));
                   print(serverPath + url);
                   if (_formKey.currentState!.validate()) {
@@ -154,7 +154,7 @@ class _newkilometerpageState extends State<newkilometerpage> {
 
   @override
   void dispose() {
-    _vehicleNameController.dispose();
+    _dateController.dispose();
     _vehicleIDController.dispose();
     _startKiloController.dispose();
     _endKiloController.dispose();

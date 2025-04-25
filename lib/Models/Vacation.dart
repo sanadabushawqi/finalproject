@@ -2,7 +2,6 @@ class Vacation{
   String vacationName ;
   String startDate ;
   String endDate ;
-  String vacationLength ;
 
 
 
@@ -10,7 +9,6 @@ class Vacation{
     this.vacationName ="",
     this.startDate ="",
     this.endDate ="",
-    this.vacationLength ="",
 
   });
 
@@ -18,7 +16,6 @@ class Vacation{
     vacationName :json["vacationName"],
     startDate :json["startDate"],
     endDate :json[" endDate"],
-    vacationLength :json["vacationLength"],
 
   );
 
@@ -26,7 +23,6 @@ class Vacation{
     "vacationName":vacationName ,
     "startDate":startDate ,
     "endDate":endDate ,
-    "vacationLength":vacationLength ,
 
   };
 }

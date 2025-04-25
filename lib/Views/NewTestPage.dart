@@ -14,7 +14,6 @@ class newtestpage extends StatefulWidget {
 
 class _newtestpageState extends State<newtestpage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _studentNameController = TextEditingController();
   final TextEditingController _studentIDController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
   final TextEditingController _endTimeController = TextEditingController();
@@ -46,20 +45,6 @@ class _newtestpageState extends State<newtestpage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextFormField(
-                controller: _studentNameController,
-                decoration: const InputDecoration(
-                  labelText: 'studentName',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter student name';
-                  }
-                  return null;
-                },
-              ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _studentIDController,
@@ -130,14 +115,13 @@ class _newtestpageState extends State<newtestpage> {
               ElevatedButton(
                 onPressed: () async {
                   var test = new Test();
-                  test.studentName = _studentNameController.text;
                   test.studentID = _studentIDController.text;
                   test.startTime = _startTimeController.text;
                   test.endTime = _endTimeController.text;
 
                   print("dfdgfgd");
 
-                  var url = "tests/inserttest.php?studentName=" + test.studentName + "&studentID=" + test.studentID + "&startTime=" + test.startTime+ "&endtime=" + test.endTime;
+                  var url = "tests/inserttest.php?studentID=" + test.studentID + "&startTime=" + test.startTime+ "&endtime=" + test.endTime;
                   final response = await http.get(Uri.parse(serverPath + url));
                   print(serverPath + url);
                   if (_formKey.currentState!.validate()) {
@@ -164,7 +148,6 @@ class _newtestpageState extends State<newtestpage> {
 
   @override
   void dispose() {
-    _studentNameController.dispose();
     _studentIDController.dispose();
     _startTimeController.dispose();
     _endTimeController.dispose();
