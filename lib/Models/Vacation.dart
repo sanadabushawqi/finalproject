@@ -1,4 +1,5 @@
 class Vacation{
+  String vacationID;
   String vacationName ;
   String startDate ;
   String endDate ;
@@ -6,6 +7,7 @@ class Vacation{
 
 
   Vacation({
+    this.vacationID="",
     this.vacationName ="",
     this.startDate ="",
     this.endDate ="",
@@ -13,6 +15,7 @@ class Vacation{
   });
 
   factory Vacation.fromJson(Map<String, dynamic> json)=>Vacation(
+    vacationID :json["vacationID"],
     vacationName :json["vacationName"],
     startDate :json["startDate"],
     endDate :json[" endDate"],
@@ -20,6 +23,7 @@ class Vacation{
   );
 
   Map<String,dynamic>tojson()=>{
+    "vacationID":vacationID ,
     "vacationName":vacationName ,
     "startDate":startDate ,
     "endDate":endDate ,

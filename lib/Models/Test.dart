@@ -1,4 +1,5 @@
 class Test{
+  String testID  ;
   String studentID  ;
   String startTime  ;
   String endTime  ;
@@ -6,6 +7,7 @@ class Test{
 
 
   Test({
+    this.testID  ="",
     this.studentID  ="",
     this.startTime  ="",
     this.endTime  ="",
@@ -13,6 +15,7 @@ class Test{
   });
 
   factory Test.fromJson(Map<String, dynamic> json)=>Test(
+    testID  :json["testID "],
     studentID  :json["studentID "],
     startTime  :json[" startTime "],
     endTime  :json["endTime "],
@@ -20,6 +23,7 @@ class Test{
   );
 
   Map<String,dynamic>tojson()=>{
+    "testID ":testID  ,
     "studentID ":studentID  ,
     "startTime ":startTime  ,
     "endTime ":endTime  ,
