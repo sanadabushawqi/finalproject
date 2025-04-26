@@ -22,13 +22,17 @@ class Student{
   factory Student.fromJson(Map<String, dynamic> json)=>Student(
     studentID:json["studentID"],
     firstName:json["firstName"],
-    lastName:json[" lastName"],
-    phoneNumber:json["phone"],
-    ID:json["ID"],
+    lastName:json["lastName"],
+    phoneNumber:json["phoneNumber"],
+    // ID:json["ID"],
     birthDate:json["birthDate"],
     email:json["email"],
-    password:json["password"],
+    // password:json["password"],
   );
+
+
+  // [{"studentID":1,"firstName":"sadasd","lastName":"sdasd","phone":"asdasd","birthDate":"sadasd","email":"asdsad"}]
+
 
   Map<String, dynamic>tojson()=>{
     "studentID":studentID,

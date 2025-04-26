@@ -18,7 +18,7 @@ class Vacation{
     vacationID :json["vacationID"],
     vacationName :json["vacationName"],
     startDate :json["startDate"],
-    endDate :json[" endDate"],
+    endDate :json["endDate"],
 
   );
 
