@@ -38,9 +38,11 @@ class _teacherHomeScreen extends State<teacherHomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Driving Instructor Portal'),
+        backgroundColor: Color(0xFF3F51B5), // لون أزرق داكن منعش
+        elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications, color: Colors.white),
             onPressed: () {
               // TODO: Implement notifications
             },
@@ -52,6 +54,9 @@ class _teacherHomeScreen extends State<teacherHomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
+        backgroundColor: Color(0xFF3F51B5),
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white70,
         onTap: (index) {
           setState(() {
             _currentIndex = index;
@@ -85,95 +90,84 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Quick Actions',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16),
-          GridView.count(
-            shrinkWrap: true,
-            crossAxisCount: 2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            children: [
+    // تعريف ألوان مختلفة لكل بطاقة لإضافة تنوع وانتعاش
+    final List<Map<String, dynamic>> cardStyles = [
+      {
+        'gradient': [Color(0xFF4CAF50), Color(0xFF8BC34A)], // أخضر منعش
+        'icon': Icons.beach_access,
+        'title': 'vacations',
+        'route': DrivingInstructorVacationsPage(),
+      },
+      {
+        'gradient': [Color(0xFF2196F3), Color(0xFF03A9F4)], // أزرق منعش
+        'icon': Icons.add_circle,
+        'title': 'kilometers',
+        'route': kilometersPage(),
+      },
+      {
+        'gradient': [Color(0xFFFF9800), Color(0xFFFFB74D)], // برتقالي منعش
+        'icon': Icons.fact_check,
+        'title': 'tests',
+        'route': DrivingTestRegistration(),
+      },
+      {
+        'gradient': [Color(0xFF9C27B0), Color(0xFFBA68C8)], // بنفسجي منعش
+        'icon': Icons.directions_car,
+        'title': 'vehicles',
+        'route': DrivingInstructorVehiclesPage(),
+      },
+    ];
 
-              FloatingActionButton(
-              onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => DrivingInstructorVacationsPage( )))},
-                child: _buildActionCard(
-
-                context,
-                'vacations',
-                Icons.beach_access,
-
-                    () {
-                  // TODO: Implement vacations
-                },
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.white, Color(0xFFF5F5F5)],
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Quick Actions',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF3F51B5),
+                letterSpacing: 0.5,
               ),
+            ),
+            const SizedBox(height: 20),
+            GridView.builder(
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                childAspectRatio: 0.9, // جعل البطاقات أطول قليلاً
               ),
-              FloatingActionButton(
-                onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => DrivingInstructorReportsPage(instructorId: '',)))},
-                child: _buildActionCard(
-                  context,
-                  'View Reports',
-                  Icons.bar_chart,
-                      () {
-                    // TODO: Implement reports
-                  },
-                ),
-              ),
-              FloatingActionButton(
-                onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => kilometersPage()))},
-                child:
-              _buildActionCard(
-                context,
-                'kilometers',
-                Icons.add_circle,
-                    () {
-                  // TODO: Implement schedule lesson
-                },
-              ),),
-              FloatingActionButton(
-                onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => DrivingInstructorSettingsPage(instructorId: '',)))},
-                child:
-              _buildActionCard(
-                context,
-                'Settings',
-                Icons.settings,
-                    () {
-                  // TODO: Implement settings
-                },
-              ),),
-                 FloatingActionButton(
-                 onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => DrivingTestRegistration()))},
+              itemCount: cardStyles.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => cardStyles[index]['route'])
+                  ),
                   child: _buildActionCard(
-
-                context,
-                'tests',
-                Icons.fact_check,
-                    () {
-                  // TODO: Implement tests
-                },
-              ),
-    ),
-              FloatingActionButton(
-                onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => DrivingInstructorVehiclesPage()))},
-                child:
-              _buildActionCard(
-                context,
-                'vehicles',
-                Icons.directions_car,
-                    () {
-                  // TODO: Implement vehicles
-                },
-              ),),
-            ],
-          ),
-        ],
+                    context,
+                    cardStyles[index]['title'],
+                    cardStyles[index]['icon'],
+                    cardStyles[index]['gradient'],
+                        () {}, // هذه الدالة لن تستخدم
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -182,20 +176,50 @@ class DashboardScreen extends StatelessWidget {
       BuildContext context,
       String title,
       IconData icon,
+      List<Color> gradientColors,
       VoidCallback onTap,
       ) {
     return Card(
-      elevation: 2,
-      child: InkWell(
-        onTap: onTap,
+      elevation: 8, // ظل أكثر بروزاً
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20), // زوايا أكثر انحناءً
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: gradientColors,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: gradientColors[0].withOpacity(0.3),
+              blurRadius: 12,
+              offset: Offset(0, 6),
+            ),
+          ],
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 48, color: Theme.of(context).primaryColor),
-            const SizedBox(height: 8),
+            Container(
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, size: 50, color: Colors.white),
+            ),
+            const SizedBox(height: 14),
             Text(
               title,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                letterSpacing: 0.5,
+              ),
             ),
           ],
         ),
@@ -208,11 +232,7 @@ class DashboardScreen extends StatelessWidget {
 class StudentsScreen extends StatelessWidget {
   const StudentsScreen({super.key});
 
-
-
-
   Future getMyStudents() async {
-
     var url = "students/getstudents.php";
     final response = await http.get(Uri.parse(serverPath + url));
     print(serverPath + url);
@@ -225,12 +245,18 @@ class StudentsScreen extends StatelessWidget {
     return arr;
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(  // Added Scaffold
-        body: FutureBuilder(
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.white, Color(0xFFF5F5F5)],
+          ),
+        ),
+        child: FutureBuilder(
           future: getMyStudents(),
           builder: (context, projectSnap) {
             if (projectSnap.hasData) {
@@ -249,39 +275,37 @@ class StudentsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-
-
                     Expanded(
                         child:ListView.builder(
+                          padding: EdgeInsets.all(12),
                           itemCount: projectSnap.data.length,
                           itemBuilder: (context, index) {
                             Student student = projectSnap.data[index];
 
                             return Card(
+                                margin: EdgeInsets.symmetric(vertical: 8),
+                                elevation: 4,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
                                 child: ListTile(
-                                  onTap: () {
-
-
-                                  },
-                                  title: Text(student.firstName! + " " + student.lastName! , style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),), // Icon(Icons.timer),
-                                  // subtitle: Text("[" + project.ariveHour! + "-" + project.exitHour! + "]" + "\n" + project.comments!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),),
-                                  // trailing: Container(
-                                  //   decoration: const BoxDecoration(
-                                  //     color: Colors.blue,
-                                  //     borderRadius: BorderRadius.all(Radius.circular(5)),
-                                  //   ),
-                                  //   padding: const EdgeInsets.symmetric(
-                                  //     horizontal: 12,
-                                  //     vertical: 4,
-                                  //   ),
-                                  //   child: Text(
-                                  //     project.totalHours!,   // + "שעות "
-                                  //     overflow: TextOverflow.ellipsis,
-                                  //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-                                  //   ),
-                                  // ),
-
-
+                                  onTap: () {},
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                  title: Text(
+                                    student.firstName! + " " + student.lastName!,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF3F51B5)
+                                    ),
+                                  ),
+                                  leading: CircleAvatar(
+                                    backgroundColor: Color(0xFF3F51B5),
+                                    child: Text(
+                                      student.firstName!.substring(0, 1).toUpperCase(),
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
                                   isThreeLine: false,
                                 ));
                           },
@@ -293,22 +317,22 @@ class StudentsScreen extends StatelessWidget {
             else if (projectSnap.hasError)
             {
               print(projectSnap.error);
-              return  Center(child: Text('שגיאה, נסה שוב', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)));
+              return Center(child: Text('שגיאה, נסה שוב', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)));
             }
-            return Center(child: new CircularProgressIndicator(color: Colors.red,));
+            return Center(child: CircularProgressIndicator(color: Color(0xFF3F51B5)));
           },
         ),
-
-    // ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const NewStudentScreen(),  // Assuming you have this screen
+              builder: (context) => const NewStudentScreen(),
             ),
           );
         },
+        backgroundColor: Color(0xFF3F51B5),
         child: const Icon(Icons.add),
         tooltip: 'Add new student',
       ),
@@ -320,7 +344,6 @@ class ScheduleScreen extends StatelessWidget {
   const ScheduleScreen({super.key});
 
   Future getMyschedules() async {
-
     var url = "schedules/getschedules.php";
     final response = await http.get(Uri.parse(serverPath + url));
     print(serverPath + url);
@@ -333,88 +356,91 @@ class ScheduleScreen extends StatelessWidget {
     return arr;
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(  // Added Scaffold
-      body: FutureBuilder(
-        future: getMyschedules(),
-        builder: (context, projectSnap) {
-          if (projectSnap.hasData) {
-            if (projectSnap.data.length == 0)
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.white, Color(0xFFF5F5F5)],
+          ),
+        ),
+        child: FutureBuilder(
+          future: getMyschedules(),
+          builder: (context, projectSnap) {
+            if (projectSnap.hasData) {
+              if (projectSnap.data.length == 0)
+              {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 2,
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Text('אין תוצאות', style: TextStyle(fontSize: 23, color: Colors.black))
+                  ),
+                );
+              }
+              else {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                        child:ListView.builder(
+                          padding: EdgeInsets.all(12),
+                          itemCount: projectSnap.data.length,
+                          itemBuilder: (context, index) {
+                            Schedule schedule = projectSnap.data[index];
+
+                            return Card(
+                                margin: EdgeInsets.symmetric(vertical: 8),
+                                elevation: 4,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: ListTile(
+                                  onTap: () {},
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                  title: Text(
+                                    schedule.studentID! + " " + schedule.studentName! + " " + schedule.teacherID+ " " + schedule.startTime!+ " " + schedule.endTime!,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF3F51B5)
+                                    ),
+                                  ),
+                                  leading: CircleAvatar(
+                                    backgroundColor: Color(0xFF3F51B5),
+                                    child: Icon(Icons.schedule, color: Colors.white),
+                                  ),
+                                  isThreeLine: false,
+                                ));
+                          },
+                        )),
+                  ],
+                );
+              }
+            }
+            else if (projectSnap.hasError)
             {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height * 2,
-                child: Align(
-                    alignment: Alignment.center,
-                    child: Text('אין תוצאות', style: TextStyle(fontSize: 23, color: Colors.black))
-                ),
-              );
+              print(projectSnap.error);
+              return Center(child: Text('שגיאה, נסה שוב', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)));
             }
-            else {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-
-
-                  Expanded(
-                      child:ListView.builder(
-                        itemCount: projectSnap.data.length,
-                        itemBuilder: (context, index) {
-                          Schedule schedule = projectSnap.data[index];
-
-                          return Card(
-                              child: ListTile(
-                                onTap: () {
-
-
-                                },
-                                title: Text(schedule.studentID! + " " + schedule.studentName! + " " + schedule.teacherID+ " " + schedule.startTime!+ " " + schedule.endTime! , style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),), // Icon(Icons.timer),
-                                // subtitle: Text("[" + project.ariveHour! + "-" + project.exitHour! + "]" + "\n" + project.comments!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),),
-                                // trailing: Container(
-                                //   decoration: const BoxDecoration(
-                                //     color: Colors.blue,
-                                //     borderRadius: BorderRadius.all(Radius.circular(5)),
-                                //   ),
-                                //   padding: const EdgeInsets.symmetric(
-                                //     horizontal: 12,
-                                //     vertical: 4,
-                                //   ),
-                                //   child: Text(
-                                //     project.totalHours!,   // + "שעות "
-                                //     overflow: TextOverflow.ellipsis,
-                                //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-                                //   ),
-                                // ),
-
-
-                                isThreeLine: false,
-                              ));
-                        },
-                      )),
-                ],
-              );
-            }
-          }
-          else if (projectSnap.hasError)
-          {
-            print(projectSnap.error);
-            return  Center(child: Text('שגיאה, נסה שוב', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)));
-          }
-          return Center(child: new CircularProgressIndicator(color: Colors.red,));
-        },
+            return Center(child: CircularProgressIndicator(color: Color(0xFF3F51B5)));
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const newschedulelesson(),  // Assuming you have this screen
+              builder: (context) => const newschedulelesson(),
             ),
           );
         },
+        backgroundColor: Color(0xFF3F51B5),
         child: const Icon(Icons.add),
         tooltip: 'Add new schedule',
       ),
@@ -427,8 +453,24 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Profile Screen - Coming Soon'),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.white, Color(0xFFF5F5F5)],
+        ),
+      ),
+      child: const Center(
+        child: Text(
+          'Profile Screen - Coming Soon',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF3F51B5),
+          ),
+        ),
+      ),
     );
   }
 }
