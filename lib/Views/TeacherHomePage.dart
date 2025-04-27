@@ -127,7 +127,7 @@ class DashboardScreen extends StatelessWidget {
                 ),
               ),
               FloatingActionButton(
-                onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => KilometerTrackerPage()))},
+                onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => kilometersPage()))},
                 child:
               _buildActionCard(
                 context,
@@ -161,7 +161,7 @@ class DashboardScreen extends StatelessWidget {
               ),
     ),
               FloatingActionButton(
-                onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => DrivingInstructorVehiclesPage(instructorId: '',)))},
+                onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => DrivingInstructorVehiclesPage()))},
                 child:
               _buildActionCard(
                 context,

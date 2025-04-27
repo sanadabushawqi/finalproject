@@ -1,54 +1,117 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import '../Models/Vehicle.dart';
+import '../Utils/clientConfeg.dart';
 import 'NewTestPage.dart';
 import 'NewVehiclePage.dart';
+import 'package:http/http.dart' as http;
 
 class DrivingInstructorVehiclesPage extends StatefulWidget {
-  const DrivingInstructorVehiclesPage({Key? key, required String instructorId}) : super(key: key);
+  const DrivingInstructorVehiclesPage({Key? key}) : super(key: key);
 
   @override
   _DrivingInstructorVehiclesPageState createState() => _DrivingInstructorVehiclesPageState();
 }
 
 class _DrivingInstructorVehiclesPageState extends State<DrivingInstructorVehiclesPage> {
-  void _navigateToNextPage() {
-    // Navigate to the next page
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const newvehiclepage(),  // 👈 هنا يمكنك تغيير الصفحة التي ينتقل إليها المستخدم. استبدل NextPage() بالصفحة التي تريدها
-      ),
-    );
+  Future getMyvehicles() async {
+
+    var url = "vehicles/getvehicles.php";
+    final response = await http.get(Uri.parse(serverPath + url));
+    print(serverPath + url);
+    List<Vehicle> arr = [];
+
+    for(Map<String, dynamic> i in json.decode(response.body)){
+      arr.add(Vehicle.fromJson(i));
+    }
+
+    return arr;
   }
+
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Driving vehicle Registration'),
-      ),
-      body: const Center(),  // Empty body
-      floatingActionButton: FloatingActionButton(
-        onPressed: _navigateToNextPage,
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,  // Position at bottom right
-    );
-  }
-}
+    return Scaffold(  // Added Scaffold
+        body: FutureBuilder(
+          future: getMyvehicles(),
+          builder: (context, projectSnap) {
+            if (projectSnap.hasData) {
+              if (projectSnap.data.length == 0)
+              {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 2,
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Text('אין תוצאות', style: TextStyle(fontSize: 23, color: Colors.black))
+                  ),
+                );
+              }
+              else {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
 
-// 👈 يمكنك استبدال هذا الكلاس بالكامل بالصفحة الجديدة التي تريد الانتقال إليها
-class NextPage extends StatelessWidget {
-  const NextPage({Key? key}) : super(key: key);
+                    Expanded(
+                        child:ListView.builder(
+                          itemCount: projectSnap.data.length,
+                          itemBuilder: (context, index) {
+                            Vehicle vehicle = projectSnap.data[index];
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('New Page'),
-      ),
-      body: const Center(
-        child: Text('This is the next page'),
-      ),
+                            return Card(
+                                child: ListTile(
+                                  onTap: () {
+
+
+                                  },
+                                  title: Text(vehicle.vehicleName!  , style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),), // Icon(Icons.timer),
+                                  subtitle: Text( vehicle.vehicleKilo! + " " + vehicle.vehicleMaintenance	!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),),
+                                  // trailing: Container(
+                                  //   decoration: const BoxDecoration(
+                                  //     color: Colors.blue,
+                                  //     borderRadius: BorderRadius.all(Radius.circular(5)),
+                                  //   ),
+                                  //   padding: const EdgeInsets.symmetric(
+                                  //     horizontal: 12,
+                                  //     vertical: 4,
+                                  //   ),
+                                  //   child: Text(
+                                  //     project.totalHours!,   // + "שעות "
+                                  //     overflow: TextOverflow.ellipsis,
+                                  //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                                  //   ),
+                                  // ),
+
+                                  isThreeLine: false,
+                                ));
+                          },
+                        )),
+                  ],
+                );
+              }
+            }
+            else if (projectSnap.hasError)
+            {
+              print(projectSnap.error);
+              return  Center(child: Text('שגיאה, נסה שוב', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)));
+            }
+            return Center(child: new CircularProgressIndicator(color: Colors.red,));
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+        onPressed: ()
+    {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (
+              context) => const newvehiclepage(), // Assuming you have this screen
+        ),
+      );
+    },
+    ),
     );
   }
 }

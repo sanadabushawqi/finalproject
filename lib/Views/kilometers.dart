@@ -1,113 +1,118 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
+import 'package:untitled/Models/Kilometer.dart';
+import '../Models/Kilometer.dart';
+import '../Utils/clientConfeg.dart';
 import 'NewKilometerPage.dart';
+import 'NewTestPage.dart';
+import 'NewVehiclePage.dart';
+import 'package:http/http.dart' as http;
 
-// Model for tracking kilometers
-class KilometerRecord {
-  final String id;
-  final DateTime date;
-  final String carName;
-  final int startKilometers;
-  final int endKilometers;
-  final bool isCompleted;
+class kilometersPage extends StatefulWidget {
+  const kilometersPage({Key? key}) : super(key: key);
 
-  KilometerRecord({
-    required this.id,
-    required this.date,
-    required this.carName,
-    required this.startKilometers,
-    this.endKilometers = 0,
-    this.isCompleted = false,
-  });
-
-  // Calculate the total distance
-  int get totalDistance => endKilometers - startKilometers;
-
-  // Create a copy of this record with updated values
-  KilometerRecord copyWith({
-    String? id,
-    DateTime? date,
-    String? carName,
-    int? startKilometers,
-    int? endKilometers,
-    bool? isCompleted,
-  }) {
-    return KilometerRecord(
-      id: id ?? this.id,
-      date: date ?? this.date,
-      carName: carName ?? this.carName,
-      startKilometers: startKilometers ?? this.startKilometers,
-      endKilometers: endKilometers ?? this.endKilometers,
-      isCompleted: isCompleted ?? this.isCompleted,
-    );
-  }
-}
-
-class KilometerTrackerPage extends StatefulWidget {
   @override
-  _KilometerTrackerPageState createState() => _KilometerTrackerPageState();
+  _kilometersPageState createState() => _kilometersPageState();
 }
 
-class _KilometerTrackerPageState extends State<KilometerTrackerPage> {
-  void _navigateToNextPage() {
-    // Navigate to the next page
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => newkilometerpage(availableCars: [
-          'Toyota Camry',
-          'Honda Accord',
-          'Nissan Altima',
-          'Ford Focus',
-          'Hyundai Elantra',
-        ]), // 👈 هنا يمكنك تغيير الصفحة التي ينتقل إليها المستخدم
-      ),
-    );
+class _kilometersPageState extends State<kilometersPage> {
+  Future getMykilometers() async {
+
+    var url = "kilometers/getkilometers.php";
+    final response = await http.get(Uri.parse(serverPath + url));
+    print(serverPath + url);
+    List<Kilometer> arr = [];
+
+    for(Map<String, dynamic> i in json.decode(response.body)){
+      arr.add(Kilometer.fromJson(i));
+    }
+
+    return arr;
   }
+
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Driving Instructor KM Tracker'),
+    return Scaffold(  // Added Scaffold
+      body: FutureBuilder(
+        future: getMykilometers(),
+        builder: (context, projectSnap) {
+          if (projectSnap.hasData) {
+            if (projectSnap.data.length == 0)
+            {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height * 2,
+                child: Align(
+                    alignment: Alignment.center,
+                    child: Text('אין תוצאות', style: TextStyle(fontSize: 23, color: Colors.black))
+                ),
+              );
+            }
+            else {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+
+                  Expanded(
+                      child:ListView.builder(
+                        itemCount: projectSnap.data.length,
+                        itemBuilder: (context, index) {
+                          Kilometer kilometer = projectSnap.data[index];
+
+                          return Card(
+                              child: ListTile(
+                                onTap: () {
+
+
+                                },
+                                title: Text(kilometer.kilometerID!  , style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),), // Icon(Icons.timer),
+                                subtitle: Text( kilometer.vehicleID! + " " + kilometer.startKilo! + " " + kilometer.endKilo! + " " + kilometer.date, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),),
+                                // trailing: Container(
+                                //   decoration: const BoxDecoration(
+                                //     color: Colors.blue,
+                                //     borderRadius: BorderRadius.all(Radius.circular(5)),
+                                //   ),
+                                //   padding: const EdgeInsets.symmetric(
+                                //     horizontal: 12,
+                                //     vertical: 4,
+                                //   ),
+                                //   child: Text(
+                                //     project.totalHours!,   // + "שעות "
+                                //     overflow: TextOverflow.ellipsis,
+                                //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                                //   ),
+                                // ),
+
+                                isThreeLine: false,
+                              ));
+                        },
+                      )),
+                ],
+              );
+            }
+          }
+          else if (projectSnap.hasError)
+          {
+            print(projectSnap.error);
+            return  Center(child: Text('שגיאה, נסה שוב', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)));
+          }
+          return Center(child: new CircularProgressIndicator(color: Colors.red,));
+        },
       ),
-      body: const Center(), // صفحة فارغة
       floatingActionButton: FloatingActionButton(
-        onPressed: _navigateToNextPage,
-        child: Icon(Icons.add),
-        tooltip: 'Add New Record',
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat, // الزر في أسفل اليمين
-    );
-  }
-}
-
-// 👈 يمكنك استبدال هذا الكلاس بالصفحة الجديدة التي تريد الانتقال إليها
-class AddKilometerRecordDialog extends StatefulWidget {
-  final List<String> availableCars;
-
-  AddKilometerRecordDialog({required this.availableCars});
-
-  @override
-  _AddKilometerRecordDialogState createState() =>
-      _AddKilometerRecordDialogState();
-}
-
-class _AddKilometerRecordDialogState extends State<AddKilometerRecordDialog> {
-  DateTime selectedDate = DateTime.now();
-  String? selectedCar;
-  final TextEditingController startKmController = TextEditingController();
-  final TextEditingController endKmController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Add New Kilometer Record'),
-      ),
-      body: const Center(
-        child: Text('Add New Record Interface'),
+        onPressed: ()
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (
+                  context) => const newkilometerpage(), // Assuming you have this screen
+            ),
+          );
+        },
       ),
     );
   }

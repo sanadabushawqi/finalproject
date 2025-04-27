@@ -7,7 +7,7 @@ import '../Models/Vehicle.dart';
 import '../Utils/clientConfeg.dart';
 
 class newkilometerpage extends StatefulWidget {
-  const newkilometerpage({Key? key, required List<String> availableCars}) : super(key: key);
+  const newkilometerpage({Key? key, }) : super(key: key);
 
   @override
   _newkilometerpageState createState() => _newkilometerpageState();

@@ -17,11 +17,11 @@ class Kilometer{
   });
 
   factory Kilometer.fromJson(Map<String, dynamic> json)=>Kilometer(
-    kilometerID	  :json["kilometerID	 "],
-    date	  :json["date	 "],
-    vehicleID  :json["vehicleID "],
-    startKilo  :json[" startKilo "],
-    endKilo  :json["endKilo "],
+    kilometerID	  :json["kilometerID"],
+    date	  :json["date"],
+    vehicleID  :json["vehicleID"],
+    startKilo  :json["startKilo"],
+    endKilo  :json["endKilo"],
 
   );
 

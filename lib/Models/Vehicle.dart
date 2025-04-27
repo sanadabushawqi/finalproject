@@ -15,10 +15,10 @@ class Vehicle{
   });
 
   factory Vehicle.fromJson(Map<String, dynamic> json)=>Vehicle(
-    vehicleID	  :json["vehicleID	 "],
-    vehicleName	  :json["vehicleName	 "],
-    vehicleKilo  :json[" vehicleKilo "],
-    vehicleMaintenance  :json["vehicleMaintenance "],
+    vehicleID	  :json["vehicleID"],
+    vehicleName	  :json["vehicleName"],
+    vehicleKilo  :json["vehicleKilo"],
+    vehicleMaintenance  :json["vehicleMaintenance"],
 
   );
 
