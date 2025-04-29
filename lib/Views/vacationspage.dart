@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/Vacation.dart';
 import '../Utils/clientConfeg.dart';
 import 'NewVacationPage.dart';
@@ -15,11 +16,7 @@ class DrivingInstructorVacationsPage extends StatefulWidget {
 
 class _DrivingInstructorVacationsPageState extends State<DrivingInstructorVacationsPage> {
 
-
-
-
   Future getMyvacations() async {
-
     var url = "vacations/getvacations.php";
     final response = await http.get(Uri.parse(serverPath + url));
     print(serverPath + url);
@@ -32,11 +29,41 @@ class _DrivingInstructorVacationsPageState extends State<DrivingInstructorVacati
     return arr;
   }
 
+  Future deletevacations(BuildContext context, String vacationID) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? getInfoDeviceSTR = prefs.getString("getInfoDeviceSTR");
+    var url = "vacations/deletevacations.php?vacationID=" + vacationID;
+    final response = await http.get(Uri.parse(serverPath + url));
+    print(serverPath + url);
+    setState(() { });
+    Navigator.pop(context);
+  }
 
+  void _showDeleteConfirmationDialog(BuildContext context, String vacationID) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('تأكيد الحذف'),
+          content: Text('هل أنت متأكد من حذف هذه الإجازة؟'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('إلغاء'),
+            ),
+            TextButton(
+              onPressed: () => deletevacations(context, vacationID),
+              child: Text('حذف'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(  // Added Scaffold
+    return Scaffold(
       body: FutureBuilder(
         future: getMyvacations(),
         builder: (context, projectSnap) {
@@ -56,9 +83,8 @@ class _DrivingInstructorVacationsPageState extends State<DrivingInstructorVacati
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-
                   Expanded(
-                      child:ListView.builder(
+                      child: ListView.builder(
                         itemCount: projectSnap.data.length,
                         itemBuilder: (context, index) {
                           Vacation vacation = projectSnap.data[index];
@@ -66,27 +92,16 @@ class _DrivingInstructorVacationsPageState extends State<DrivingInstructorVacati
                           return Card(
                               child: ListTile(
                                 onTap: () {
-
-
+                                  // أي إجراء عند النقر على عنصر القائمة
                                 },
-                                title: Text(vacation.vacationName!  , style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),), // Icon(Icons.timer),
-                                subtitle: Text( vacation.startDate! + " " + vacation.endDate!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),),
-                                // trailing: Container(
-                                //   decoration: const BoxDecoration(
-                                //     color: Colors.blue,
-                                //     borderRadius: BorderRadius.all(Radius.circular(5)),
-                                //   ),
-                                //   padding: const EdgeInsets.symmetric(
-                                //     horizontal: 12,
-                                //     vertical: 4,
-                                //   ),
-                                //   child: Text(
-                                //     project.totalHours!,   // + "שעות "
-                                //     overflow: TextOverflow.ellipsis,
-                                //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-                                //   ),
-                                // ),
-
+                                title: Text(vacation.vacationName!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),),
+                                subtitle: Text(vacation.startDate! + " " + vacation.endDate!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),),
+                                trailing: IconButton(
+                                  icon: Icon(Icons.delete, color: Colors.red),
+                                  onPressed: () {
+                                    _showDeleteConfirmationDialog(context, vacation.vacationID!);
+                                  },
+                                ),
                                 isThreeLine: false,
                               ));
                         },
@@ -98,9 +113,9 @@ class _DrivingInstructorVacationsPageState extends State<DrivingInstructorVacati
           else if (projectSnap.hasError)
           {
             print(projectSnap.error);
-            return  Center(child: Text('שגיאה, נסה שוב', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)));
+            return Center(child: Text('שגיאה, נסה שוב', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)));
           }
-          return Center(child: new CircularProgressIndicator(color: Colors.red,));
+          return Center(child: CircularProgressIndicator(color: Colors.red));
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -108,7 +123,7 @@ class _DrivingInstructorVacationsPageState extends State<DrivingInstructorVacati
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const NewVacationScreen(),  // Assuming you have this screen
+              builder: (context) => const NewVacationScreen(),
             ),
           );
         },

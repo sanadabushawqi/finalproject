@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/Vehicle.dart';
 import '../Utils/clientConfeg.dart';
 import 'NewTestPage.dart';
@@ -29,7 +30,37 @@ class _DrivingInstructorVehiclesPageState extends State<DrivingInstructorVehicle
     return arr;
   }
 
+  Future deletevehicles(BuildContext context, String vehicleID) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? getInfoDeviceSTR = prefs.getString("getInfoDeviceSTR");
+    var url = "vehicles/deletevehicles.php?vehicleID=" + vehicleID;
+    final response = await http.get(Uri.parse(serverPath + url));
+    print(serverPath + url);
+    setState(() { });
+    Navigator.pop(context);
+  }
 
+  void _showDeleteConfirmationDialog(BuildContext context, String vehicleID) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Delete'),
+          content: Text('Are you sure you want to delete this test record?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => deletevehicles(context, vehicleID),
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,22 +99,12 @@ class _DrivingInstructorVehiclesPageState extends State<DrivingInstructorVehicle
                                   },
                                   title: Text(vehicle.vehicleName!  , style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),), // Icon(Icons.timer),
                                   subtitle: Text( vehicle.vehicleKilo! + " " + vehicle.vehicleMaintenance	!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),),
-                                  // trailing: Container(
-                                  //   decoration: const BoxDecoration(
-                                  //     color: Colors.blue,
-                                  //     borderRadius: BorderRadius.all(Radius.circular(5)),
-                                  //   ),
-                                  //   padding: const EdgeInsets.symmetric(
-                                  //     horizontal: 12,
-                                  //     vertical: 4,
-                                  //   ),
-                                  //   child: Text(
-                                  //     project.totalHours!,   // + "שעות "
-                                  //     overflow: TextOverflow.ellipsis,
-                                  //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-                                  //   ),
-                                  // ),
-
+                                  trailing: IconButton(
+                                    icon: Icon(Icons.delete, color: Colors.red),
+                                    onPressed: () {
+                                      _showDeleteConfirmationDialog(context, vehicle.vehicleID!);
+                                    },
+                                  ),
                                   isThreeLine: false,
                                 ));
                           },

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/Models/Student.dart';
 import '../Models/Schedule.dart';
 import '../Utils/clientConfeg.dart';
@@ -228,9 +229,14 @@ class DashboardScreen extends StatelessWidget {
   }
 }
 
+class StudentsScreen extends StatefulWidget {
+  const StudentsScreen({Key? key}) : super(key: key);
 
-class StudentsScreen extends StatelessWidget {
-  const StudentsScreen({super.key});
+  @override
+  State<StudentsScreen> createState() => _StudentsScreenState();
+}
+
+class _StudentsScreenState extends State<StudentsScreen> {
 
   Future getMyStudents() async {
     var url = "students/getstudents.php";
@@ -245,8 +251,44 @@ class StudentsScreen extends StatelessWidget {
     return arr;
   }
 
+  Future deletestudents(BuildContext context, String studentID ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? getInfoDeviceSTR = prefs.getString("getInfoDeviceSTR");
+    var url = "students/deletestudents.php?studentID=" + studentID ;
+    final response = await http.get(Uri.parse(serverPath + url));
+    print(serverPath + url);
+    setState(() {
+
+    });
+    Navigator.pop(context);
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, String studentID ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Delete'),
+          content: Text('Are you sure you want to delete this test record?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => deletestudents(context, studentID ),
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -304,7 +346,14 @@ class StudentsScreen extends StatelessWidget {
                                     child: Text(
                                       student.firstName!.substring(0, 1).toUpperCase(),
                                       style: TextStyle(color: Colors.white),
+
                                     ),
+                                  ),
+                                  trailing: IconButton(
+                                    icon: Icon(Icons.delete, color: Colors.red),
+                                    onPressed: () {
+                                      _showDeleteConfirmationDialog(context, student.studentID !);
+                                    },
                                   ),
                                   isThreeLine: false,
                                 ));
@@ -339,9 +388,15 @@ class StudentsScreen extends StatelessWidget {
     );
   }
 }
+class ScheduleScreen extends StatefulWidget {
+  const ScheduleScreen({Key? key}) : super(key: key);
 
-class ScheduleScreen extends StatelessWidget {
-  const ScheduleScreen({super.key});
+  @override
+  State<ScheduleScreen> createState() => _ScheduleScreenState();
+}
+
+class _ScheduleScreenState extends State<ScheduleScreen> {
+
 
   Future getMyschedules() async {
     var url = "schedules/getschedules.php";
@@ -354,6 +409,40 @@ class ScheduleScreen extends StatelessWidget {
     }
 
     return arr;
+  }
+
+  Future deleteschedules(BuildContext context, String scheduleID  ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? getInfoDeviceSTR = prefs.getString("getInfoDeviceSTR");
+    var url = "shedules/deleteschedules.php?scheduleID =" + scheduleID  ;
+    final response = await http.get(Uri.parse(serverPath + url));
+    print(serverPath + url);
+    setState(() {
+
+    });
+    Navigator.pop(context);
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, String scheduleID  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Delete'),
+          content: Text('Are you sure you want to delete this test record?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => deleteschedules(context, scheduleID  ),
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -413,6 +502,12 @@ class ScheduleScreen extends StatelessWidget {
                                   leading: CircleAvatar(
                                     backgroundColor: Color(0xFF3F51B5),
                                     child: Icon(Icons.schedule, color: Colors.white),
+                                  ),
+                                  trailing: IconButton(
+                                    icon: Icon(Icons.delete, color: Colors.red),
+                                    onPressed: () {
+                                      _showDeleteConfirmationDialog(context, schedule.scheduleID!);
+                                    },
                                   ),
                                   isThreeLine: false,
                                 ));

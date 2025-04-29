@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/Models/Test.dart';
 import '../Models/Vacation.dart';
 import '../Utils/clientConfeg.dart';
@@ -17,11 +18,7 @@ class DrivingTestRegistration extends StatefulWidget {
 
 class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
 
-
-
-
   Future getMytests() async {
-
     var url = "tests/gettests.php";
     final response = await http.get(Uri.parse(serverPath + url));
     print(serverPath + url);
@@ -34,11 +31,41 @@ class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
     return arr;
   }
 
+  Future deletetests(BuildContext context, String testID) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? getInfoDeviceSTR = prefs.getString("getInfoDeviceSTR");
+    var url = "tests/deletetests.php?testID=" + testID;
+    final response = await http.get(Uri.parse(serverPath + url));
+    print(serverPath + url);
+    setState(() { });
+    Navigator.pop(context);
+  }
 
+  void _showDeleteConfirmationDialog(BuildContext context, String testID) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Delete'),
+          content: Text('Are you sure you want to delete this test record?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => deletetests(context, testID),
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(  // Added Scaffold
+    return Scaffold(
       body: FutureBuilder(
         future: getMytests(),
         builder: (context, projectSnap) {
@@ -49,7 +76,7 @@ class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
                 height: MediaQuery.of(context).size.height * 2,
                 child: Align(
                     alignment: Alignment.center,
-                    child: Text('אין תוצאות', style: TextStyle(fontSize: 23, color: Colors.black))
+                    child: Text('No Results', style: TextStyle(fontSize: 23, color: Colors.black))
                 ),
               );
             }
@@ -58,7 +85,6 @@ class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-
                   Expanded(
                       child:ListView.builder(
                         itemCount: projectSnap.data.length,
@@ -68,27 +94,16 @@ class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
                           return Card(
                               child: ListTile(
                                 onTap: () {
-
-
+                                  // Any action when tapping on the list item
                                 },
-                                title: Text(test.studentID!  , style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),), // Icon(Icons.timer),
-                                subtitle: Text( test.startTime! + " " + test.endTime!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),),
-                                // trailing: Container(
-                                //   decoration: const BoxDecoration(
-                                //     color: Colors.blue,
-                                //     borderRadius: BorderRadius.all(Radius.circular(5)),
-                                //   ),
-                                //   padding: const EdgeInsets.symmetric(
-                                //     horizontal: 12,
-                                //     vertical: 4,
-                                //   ),
-                                //   child: Text(
-                                //     project.totalHours!,   // + "שעות "
-                                //     overflow: TextOverflow.ellipsis,
-                                //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-                                //   ),
-                                // ),
-
+                                title: Text(test.studentID!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
+                                subtitle: Text(test.startTime! + " " + test.endTime!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
+                                trailing: IconButton(
+                                  icon: Icon(Icons.delete, color: Colors.red),
+                                  onPressed: () {
+                                    _showDeleteConfirmationDialog(context, test.testID!);
+                                  },
+                                ),
                                 isThreeLine: false,
                               ));
                         },
@@ -100,9 +115,9 @@ class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
           else if (projectSnap.hasError)
           {
             print(projectSnap.error);
-            return  Center(child: Text('שגיאה, נסה שוב', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)));
+            return Center(child: Text('Error, try again', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)));
           }
-          return Center(child: new CircularProgressIndicator(color: Colors.red,));
+          return Center(child: CircularProgressIndicator(color: Colors.red));
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -110,12 +125,12 @@ class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const newtestpage(),  // Assuming you have this screen
+              builder: (context) => const newtestpage(),
             ),
           );
         },
         child: const Icon(Icons.add),
-        tooltip: 'Add new vacation',
+        tooltip: 'Add new test',
       ),
     );
   }
