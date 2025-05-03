@@ -15,8 +15,6 @@ import 'vacationspage.dart';
 import 'kilometers.dart';
 import 'package:http/http.dart' as http;
 
-
-
 class teacherHomeScreen extends StatefulWidget {
   const teacherHomeScreen({super.key});
 
@@ -38,9 +36,14 @@ class _teacherHomeScreen extends State<teacherHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Driving Instructor Portal'),
-        backgroundColor: Color(0xFF3F51B5), // لون أزرق داكن منعش
-        elevation: 0,
+        title: const Text(
+          'Driving Instructor Portal',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.blue,
+        elevation: 2,
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications, color: Colors.white),
@@ -55,7 +58,7 @@ class _teacherHomeScreen extends State<teacherHomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Color(0xFF3F51B5),
+        backgroundColor: Colors.blue,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white70,
         onTap: (index) {
@@ -91,28 +94,28 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // تعريف ألوان مختلفة لكل بطاقة لإضافة تنوع وانتعاش
+    // Define colors for each card
     final List<Map<String, dynamic>> cardStyles = [
       {
-        'gradient': [Color(0xFF4CAF50), Color(0xFF8BC34A)], // أخضر منعش
+        'gradient': [Colors.green.shade500, Colors.green.shade300],
         'icon': Icons.beach_access,
         'title': 'vacations',
         'route': DrivingInstructorVacationsPage(),
       },
       {
-        'gradient': [Color(0xFF2196F3), Color(0xFF03A9F4)], // أزرق منعش
+        'gradient': [Colors.blue.shade500, Colors.blue.shade300],
         'icon': Icons.add_circle,
         'title': 'kilometers',
         'route': kilometersPage(),
       },
       {
-        'gradient': [Color(0xFFFF9800), Color(0xFFFFB74D)], // برتقالي منعش
+        'gradient': [Colors.orange.shade500, Colors.orange.shade300],
         'icon': Icons.fact_check,
         'title': 'tests',
         'route': DrivingTestRegistration(),
       },
       {
-        'gradient': [Color(0xFF9C27B0), Color(0xFFBA68C8)], // بنفسجي منعش
+        'gradient': [Colors.purple.shade500, Colors.purple.shade300],
         'icon': Icons.directions_car,
         'title': 'vehicles',
         'route': DrivingInstructorVehiclesPage(),
@@ -135,9 +138,9 @@ class DashboardScreen extends StatelessWidget {
             Text(
               'Quick Actions',
               style: TextStyle(
-                fontSize: 28,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF3F51B5),
+                color: Colors.blue.shade800,
                 letterSpacing: 0.5,
               ),
             ),
@@ -148,7 +151,7 @@ class DashboardScreen extends StatelessWidget {
                 crossAxisCount: 2,
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
-                childAspectRatio: 0.9, // جعل البطاقات أطول قليلاً
+                childAspectRatio: 0.9,
               ),
               itemCount: cardStyles.length,
               itemBuilder: (context, index) {
@@ -162,7 +165,7 @@ class DashboardScreen extends StatelessWidget {
                     cardStyles[index]['title'],
                     cardStyles[index]['icon'],
                     cardStyles[index]['gradient'],
-                        () {}, // هذه الدالة لن تستخدم
+                        () {}, // This function won't be used
                   ),
                 );
               },
@@ -181,25 +184,18 @@ class DashboardScreen extends StatelessWidget {
       VoidCallback onTap,
       ) {
     return Card(
-      elevation: 8, // ظل أكثر بروزاً
+      elevation: 3,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20), // زوايا أكثر انحناءً
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(12),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: gradientColors,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: gradientColors[0].withOpacity(0.3),
-              blurRadius: 12,
-              offset: Offset(0, 6),
-            ),
-          ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -269,7 +265,10 @@ class _StudentsScreenState extends State<StudentsScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Confirm Delete'),
-          content: Text('Are you sure you want to delete this test record?'),
+          content: Text('Are you sure you want to delete this student record?'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -278,6 +277,9 @@ class _StudentsScreenState extends State<StudentsScreen> {
             TextButton(
               onPressed: () => deletestudents(context, studentID ),
               child: Text('Delete'),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.red,
+              ),
             ),
           ],
         );
@@ -287,8 +289,6 @@ class _StudentsScreenState extends State<StudentsScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -326,7 +326,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
 
                             return Card(
                                 margin: EdgeInsets.symmetric(vertical: 8),
-                                elevation: 4,
+                                elevation: 3,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -336,17 +336,16 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                   title: Text(
                                     student.firstName! + " " + student.lastName!,
                                     style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 17,
                                         fontWeight: FontWeight.bold,
-                                        color: Color(0xFF3F51B5)
+                                        color: Colors.blue
                                     ),
                                   ),
                                   leading: CircleAvatar(
-                                    backgroundColor: Color(0xFF3F51B5),
+                                    backgroundColor: Colors.blue,
                                     child: Text(
                                       student.firstName!.substring(0, 1).toUpperCase(),
                                       style: TextStyle(color: Colors.white),
-
                                     ),
                                   ),
                                   trailing: IconButton(
@@ -368,7 +367,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
               print(projectSnap.error);
               return Center(child: Text('שגיאה, נסה שוב', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)));
             }
-            return Center(child: CircularProgressIndicator(color: Color(0xFF3F51B5)));
+            return Center(child: CircularProgressIndicator(color: Colors.blue));
           },
         ),
       ),
@@ -379,15 +378,16 @@ class _StudentsScreenState extends State<StudentsScreen> {
             MaterialPageRoute(
               builder: (context) => const NewStudentScreen(),
             ),
-          );
+          ).then((value) => setState(() {}));
         },
-        backgroundColor: Color(0xFF3F51B5),
+        backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
         tooltip: 'Add new student',
       ),
     );
   }
 }
+
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({Key? key}) : super(key: key);
 
@@ -396,8 +396,6 @@ class ScheduleScreen extends StatefulWidget {
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-
-
   Future getMyschedules() async {
     var url = "schedules/getschedules.php";
     final response = await http.get(Uri.parse(serverPath + url));
@@ -429,7 +427,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Confirm Delete'),
-          content: Text('Are you sure you want to delete this test record?'),
+          content: Text('Are you sure you want to delete this schedule?'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -438,6 +439,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             TextButton(
               onPressed: () => deleteschedules(context, scheduleID  ),
               child: Text('Delete'),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.red,
+              ),
             ),
           ],
         );
@@ -484,7 +488,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
                             return Card(
                                 margin: EdgeInsets.symmetric(vertical: 8),
-                                elevation: 4,
+                                elevation: 3,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -492,15 +496,22 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                   onTap: () {},
                                   contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                   title: Text(
-                                    schedule.studentID! + " " + schedule.studentName! + " " + schedule.teacherID+ " " + schedule.startTime!+ " " + schedule.endTime!,
+                                    schedule.studentName!,
                                     style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 17,
                                         fontWeight: FontWeight.bold,
-                                        color: Color(0xFF3F51B5)
+                                        color: Colors.blue
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    "${schedule.startTime} - ${schedule.endTime}",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey[700],
                                     ),
                                   ),
                                   leading: CircleAvatar(
-                                    backgroundColor: Color(0xFF3F51B5),
+                                    backgroundColor: Colors.blue,
                                     child: Icon(Icons.schedule, color: Colors.white),
                                   ),
                                   trailing: IconButton(
@@ -522,7 +533,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               print(projectSnap.error);
               return Center(child: Text('שגיאה, נסה שוב', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)));
             }
-            return Center(child: CircularProgressIndicator(color: Color(0xFF3F51B5)));
+            return Center(child: CircularProgressIndicator(color: Colors.blue));
           },
         ),
       ),
@@ -533,9 +544,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             MaterialPageRoute(
               builder: (context) => const newschedulelesson(),
             ),
-          );
+          ).then((value) => setState(() {}));
         },
-        backgroundColor: Color(0xFF3F51B5),
+        backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
         tooltip: 'Add new schedule',
       ),
@@ -562,10 +573,12 @@ class ProfileScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF3F51B5),
+            color: Colors.blue,
           ),
         ),
       ),
     );
   }
 }
+
+

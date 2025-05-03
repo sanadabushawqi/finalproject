@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/Models/Kilometer.dart';
@@ -48,6 +47,9 @@ class _kilometersPageState extends State<kilometersPage> {
         return AlertDialog(
           title: Text('Confirm Delete'),
           content: Text('Are you sure you want to delete this kilometer record?'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -56,6 +58,9 @@ class _kilometersPageState extends State<kilometersPage> {
             TextButton(
               onPressed: () => deletekilometers(context, kilometerID),
               child: Text('Delete'),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.red,
+              ),
             ),
           ],
         );
@@ -66,59 +71,156 @@ class _kilometersPageState extends State<kilometersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-        future: getMykilometers(),
-        builder: (context, projectSnap) {
-          if (projectSnap.hasData) {
-            if (projectSnap.data.length == 0)
-            {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height * 2,
-                child: Align(
-                    alignment: Alignment.center,
-                    child: Text('No Results', style: TextStyle(fontSize: 23, color: Colors.black))
-                ),
-              );
-            }
-            else {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                      child:ListView.builder(
+      appBar: AppBar(
+        title: Text(
+          'Kilometers',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        elevation: 2,
+        backgroundColor: Colors.blue,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.white, Color(0xFFF5F5F5)],
+          ),
+        ),
+        child: FutureBuilder(
+          future: getMykilometers(),
+          builder: (context, projectSnap) {
+            if (projectSnap.hasData) {
+              if (projectSnap.data.length == 0)
+              {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.directions_car, size: 80, color: Colors.grey[400]),
+                      SizedBox(height: 16),
+                      Text(
+                        'No kilometers found',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.grey[700],
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              else {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      child: ListView.builder(
+                        padding: EdgeInsets.all(12),
                         itemCount: projectSnap.data.length,
                         itemBuilder: (context, index) {
                           Kilometer kilometer = projectSnap.data[index];
 
                           return Card(
-                              child: ListTile(
-                                onTap: () {
-                                  // Any action when tapping on the list item
-                                },
-                                title: Text(kilometer.kilometerID!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
-                                subtitle: Text(kilometer.vehicleID! + " " + kilometer.startKilo! + " " + kilometer.endKilo! + " " + kilometer.date, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
-                                trailing: IconButton(
-                                  icon: Icon(Icons.delete, color: Colors.red),
-                                  onPressed: () {
-                                    _showDeleteConfirmationDialog(context, kilometer.kilometerID!);
-                                  },
+                            margin: EdgeInsets.symmetric(vertical: 8),
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ListTile(
+                              onTap: () {
+                                // Any action when tapping on the list item
+                              },
+                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              title: Text(
+                                "Vehicle: " + kilometer.vehicleID!,
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue,
                                 ),
-                                isThreeLine: false,
-                              ));
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.timeline, size: 16, color: Colors.blue),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        "Start: ${kilometer.startKilo} - End: ${kilometer.endKilo}",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[700],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.calendar_today, size: 16, color: Colors.blue),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        kilometer.date,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[700],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.blue,
+                                child: Icon(Icons.directions_car, color: Colors.white),
+                              ),
+                              trailing: IconButton(
+                                icon: Icon(Icons.delete, color: Colors.red),
+                                onPressed: () {
+                                  _showDeleteConfirmationDialog(context, kilometer.kilometerID!);
+                                },
+                              ),
+                              isThreeLine: true,
+                            ),
+                          );
                         },
-                      )),
-                ],
+                      ),
+                    ),
+                  ],
+                );
+              }
+            }
+            else if (projectSnap.hasError)
+            {
+              print(projectSnap.error);
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.error_outline, size: 60, color: Colors.red),
+                    SizedBox(height: 16),
+                    Text(
+                      'Error loading data. Please try again.',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
               );
             }
-          }
-          else if (projectSnap.hasError)
-          {
-            print(projectSnap.error);
-            return Center(child: Text('Error, try again', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)));
-          }
-          return Center(child: CircularProgressIndicator(color: Colors.red));
-        },
+            return Center(child: CircularProgressIndicator(color: Colors.blue));
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -127,10 +229,14 @@ class _kilometersPageState extends State<kilometersPage> {
             MaterialPageRoute(
               builder: (context) => const newkilometerpage(),
             ),
-          );
+          ).then((value) => setState(() {}));
         },
+        backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
+        tooltip: 'Add new kilometer',
       ),
     );
   }
 }
+
+

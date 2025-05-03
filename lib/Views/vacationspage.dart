@@ -29,7 +29,7 @@ class _DrivingInstructorVacationsPageState extends State<DrivingInstructorVacati
     return arr;
   }
 
-  Future deletevacations(BuildContext context, String vacationID) async {
+  Future deleteVacation(BuildContext context, String vacationID) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? getInfoDeviceSTR = prefs.getString("getInfoDeviceSTR");
     var url = "vacations/deletevacations.php?vacationID=" + vacationID;
@@ -44,16 +44,19 @@ class _DrivingInstructorVacationsPageState extends State<DrivingInstructorVacati
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('تأكيد الحذف'),
-          content: Text('هل أنت متأكد من حذف هذه الإجازة؟'),
+          title: Text('Confirm Deletion'),
+          content: Text('Are you sure you want to delete this vacation?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('إلغاء'),
+              child: Text('Cancel'),
             ),
             TextButton(
-              onPressed: () => deletevacations(context, vacationID),
-              child: Text('حذف'),
+              onPressed: () => deleteVacation(context, vacationID),
+              child: Text('Delete'),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.red,
+              ),
             ),
           ],
         );
@@ -64,58 +67,124 @@ class _DrivingInstructorVacationsPageState extends State<DrivingInstructorVacati
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Instructor Vacations',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        elevation: 2,
+        backgroundColor: Colors.blue,
+      ),
       body: FutureBuilder(
         future: getMyvacations(),
         builder: (context, projectSnap) {
           if (projectSnap.hasData) {
-            if (projectSnap.data.length == 0)
-            {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height * 2,
-                child: Align(
-                    alignment: Alignment.center,
-                    child: Text('אין תוצאות', style: TextStyle(fontSize: 23, color: Colors.black))
+            var vacations = projectSnap.data as List;
+            if (vacations.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.event_busy, size: 80, color: Colors.grey[400]),
+                    SizedBox(height: 16),
+                    Text(
+                      'No vacations found',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.grey[700],
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView.builder(
+                  itemCount: vacations.length,
+                  itemBuilder: (context, index) {
+                    Vacation vacation = vacations[index];
+
+                    return Card(
+                      elevation: 3,
+                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        onTap: () {
+                          // Action when tapping on a vacation item
+                        },
+                        title: Text(
+                          vacation.vacationName!,
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Icon(Icons.date_range, size: 16, color: Colors.blue),
+                                SizedBox(width: 4),
+                                Expanded(
+                                  child: Text(
+                                    '${vacation.startDate!} - ${vacation.endDate!}',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.grey[700],
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete, color: Colors.red),
+                          onPressed: () {
+                            _showDeleteConfirmationDialog(context, vacation.vacationID!);
+                          },
+                        ),
+                        isThreeLine: false,
+                      ),
+                    );
+                  },
                 ),
               );
             }
-            else {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                      child: ListView.builder(
-                        itemCount: projectSnap.data.length,
-                        itemBuilder: (context, index) {
-                          Vacation vacation = projectSnap.data[index];
-
-                          return Card(
-                              child: ListTile(
-                                onTap: () {
-                                  // أي إجراء عند النقر على عنصر القائمة
-                                },
-                                title: Text(vacation.vacationName!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),),
-                                subtitle: Text(vacation.startDate! + " " + vacation.endDate!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),),
-                                trailing: IconButton(
-                                  icon: Icon(Icons.delete, color: Colors.red),
-                                  onPressed: () {
-                                    _showDeleteConfirmationDialog(context, vacation.vacationID!);
-                                  },
-                                ),
-                                isThreeLine: false,
-                              ));
-                        },
-                      )),
-                ],
-              );
-            }
-          }
-          else if (projectSnap.hasError)
-          {
+          } else if (projectSnap.hasError) {
             print(projectSnap.error);
-            return Center(child: Text('שגיאה, נסה שוב', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)));
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error_outline, size: 60, color: Colors.red),
+                  SizedBox(height: 16),
+                  Text(
+                    'Error loading data. Please try again.',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+            );
           }
-          return Center(child: CircularProgressIndicator(color: Colors.red));
+          return Center(
+            child: CircularProgressIndicator(
+              color: Colors.blue,
+            ),
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -125,10 +194,11 @@ class _DrivingInstructorVacationsPageState extends State<DrivingInstructorVacati
             MaterialPageRoute(
               builder: (context) => const NewVacationScreen(),
             ),
-          );
+          ).then((value) => setState(() {})); // Refresh the list when returning
         },
         child: const Icon(Icons.add),
         tooltip: 'Add new vacation',
+        backgroundColor: Colors.blue,
       ),
     );
   }

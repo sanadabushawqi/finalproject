@@ -3,6 +3,7 @@ class Test{
   String studentID;
   String startTime;
   String endTime;
+  String testDate;
 
 
 
@@ -11,6 +12,7 @@ class Test{
     this.studentID="",
     this.startTime="",
     this.endTime="",
+    this.testDate="",
 
   });
 
@@ -19,6 +21,7 @@ class Test{
     studentID  :json["studentID"],
     startTime  :json["startTime"],
     endTime  :json["endTime"],
+    testDate  :json["testDate"],
 
   );
 
@@ -27,6 +30,7 @@ class Test{
     "studentID ":studentID,
     "startTime ":startTime,
     "endTime ":endTime,
+    "testDate ":testDate,
 
   };
 }
