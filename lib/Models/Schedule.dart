@@ -5,6 +5,7 @@ class Schedule{
   String startTime  ;
   String endTime  ;
   String studentName  ;
+  String date	  ;
 
 
 
@@ -15,6 +16,7 @@ class Schedule{
     this.endTime  ="",
     this.scheduleID  ="",
     this.studentName  ="",
+    this.date	  ="",
 
   });
 
@@ -25,6 +27,7 @@ class Schedule{
     startTime: json["startTime"],
     endTime: json["endTime"],
     studentName: json["studentName"],
+    date	: json["date"],
 
 
   );
@@ -39,6 +42,7 @@ class Schedule{
     "startTime":startTime  ,
     "endTime":endTime  ,
     "scheduleID":studentName  ,
+    "date	":date	  ,
 
 
   };

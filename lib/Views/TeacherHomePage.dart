@@ -313,12 +313,13 @@ class _StudentsScreenState extends State<StudentsScreen> {
                 );
               }
               else {
+
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Expanded(
-                        child:ListView.builder(
+                        child: ListView.builder(
                           padding: EdgeInsets.all(12),
                           itemCount: projectSnap.data.length,
                           itemBuilder: (context, index) {
@@ -341,6 +342,34 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                         color: Colors.blue
                                     ),
                                   ),
+                                  subtitle: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Phone: ${student.phoneNumber}",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[700],
+                                        ),
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        "Email: ${student.email}",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[700],
+                                        ),
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        "Birth Date: ${student.birthDate}",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[700],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                   leading: CircleAvatar(
                                     backgroundColor: Colors.blue,
                                     child: Text(
@@ -351,12 +380,16 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                   trailing: IconButton(
                                     icon: Icon(Icons.delete, color: Colors.red),
                                     onPressed: () {
-                                      _showDeleteConfirmationDialog(context, student.studentID !);
+                                      _showDeleteConfirmationDialog(context, student.studentID!);
                                     },
                                   ),
-                                  isThreeLine: false,
+                                  isThreeLine: true,
                                 ));
                           },
+
+
+
+
                         )),
                   ],
                 );
@@ -503,12 +536,25 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                         color: Colors.blue
                                     ),
                                   ),
-                                  subtitle: Text(
-                                    "${schedule.startTime} - ${schedule.endTime}",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey[700],
-                                    ),
+                                  subtitle: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Date: ${schedule.date}",  // Changed to English
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[700],
+                                        ),
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        "Time: ${schedule.startTime} - ${schedule.endTime}",  // Start time is now on the left, end time on the right
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[700],
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   leading: CircleAvatar(
                                     backgroundColor: Colors.blue,
@@ -520,7 +566,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                       _showDeleteConfirmationDialog(context, schedule.scheduleID!);
                                     },
                                   ),
-                                  isThreeLine: false,
+                                  isThreeLine: true,
                                 ));
                           },
                         )),
@@ -542,7 +588,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const newschedulelesson(),
+              builder: (context) => const NewScheduleLesson(),
             ),
           ).then((value) => setState(() {}));
         },
