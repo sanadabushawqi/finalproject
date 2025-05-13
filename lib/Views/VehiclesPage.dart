@@ -1,52 +1,49 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:untitled/Models/Test.dart';
-import '../Models/Vacation.dart';
+import '../Models/Vehicle.dart';
 import '../Utils/clientConfeg.dart';
-import 'NewTestPage.dart';
-import 'NewVacationPage.dart';
+import 'NewVehiclePage.dart';
+import 'package:http/http.dart' as http;
 
-class DrivingTestRegistration extends StatefulWidget {
-  const DrivingTestRegistration({Key? key}) : super(key: key);
+class DrivingInstructorVehiclesPage extends StatefulWidget {
+  const DrivingInstructorVehiclesPage({Key? key}) : super(key: key);
 
   @override
-  State<DrivingTestRegistration> createState() => _DrivingTestRegistrationState();
+  _DrivingInstructorVehiclesPageState createState() => _DrivingInstructorVehiclesPageState();
 }
 
-class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
-  Future getMytests() async {
-    var url = "tests/gettests.php";
+class _DrivingInstructorVehiclesPageState extends State<DrivingInstructorVehiclesPage> {
+  Future getMyvehicles() async {
+    var url = "vehicles/getvehicles.php";
     final response = await http.get(Uri.parse(serverPath + url));
     print(serverPath + url);
-    List<Test> arr = [];
+    List<Vehicle> arr = [];
 
     for(Map<String, dynamic> i in json.decode(response.body)){
-      arr.add(Test.fromJson(i));
+      arr.add(Vehicle.fromJson(i));
     }
 
     return arr;
   }
 
-  Future deletetests(BuildContext context, String testID) async {
+  Future deletevehicles(BuildContext context, String vehicleID) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? getInfoDeviceSTR = prefs.getString("getInfoDeviceSTR");
-    var url = "tests/deletetests.php?testID=" + testID;
+    var url = "vehicles/deletevehicles.php?vehicleID=" + vehicleID;
     final response = await http.get(Uri.parse(serverPath + url));
     print(serverPath + url);
     setState(() { });
     Navigator.pop(context);
   }
 
-  void _showDeleteConfirmationDialog(BuildContext context, String testID) {
+  void _showDeleteConfirmationDialog(BuildContext context, String vehicleID) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Confirm Delete'),
-          content: Text('Are you sure you want to delete this test record?'),
+          content: Text('Are you sure you want to delete this vehicle?'),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -56,7 +53,7 @@ class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
               child: Text('Cancel'),
             ),
             TextButton(
-              onPressed: () => deletetests(context, testID),
+              onPressed: () => deletevehicles(context, vehicleID),
               child: Text('Delete'),
               style: TextButton.styleFrom(
                 foregroundColor: Colors.red,
@@ -73,7 +70,7 @@ class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Driving Tests',
+          'Vehicles',
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -94,7 +91,7 @@ class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
           ),
         ),
         child: FutureBuilder(
-          future: getMytests(),
+          future: getMyvehicles(),
           builder: (context, projectSnap) {
             if (projectSnap.hasData) {
               if (projectSnap.data.length == 0) {
@@ -102,10 +99,10 @@ class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.fact_check, size: 80, color: Colors.grey[400]),
+                      Icon(Icons.directions_car, size: 80, color: Colors.grey[400]),
                       SizedBox(height: 16),
                       Text(
-                        'No driving tests found',
+                        'No vehicles found',
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.grey[700],
@@ -120,7 +117,7 @@ class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
                   padding: EdgeInsets.all(12),
                   itemCount: projectSnap.data.length,
                   itemBuilder: (context, index) {
-                    Test test = projectSnap.data[index];
+                    Vehicle vehicle = projectSnap.data[index];
 
                     return Card(
                       margin: EdgeInsets.symmetric(vertical: 8),
@@ -130,11 +127,11 @@ class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
                       ),
                       child: ListTile(
                         onTap: () {
-                          // Any action when tapping on the list item
+                          // Any action when tapping on a vehicle
                         },
                         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         title: Text(
-                          "Student ID: " + test.studentID!,
+                          vehicle.vehicleName!,
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
@@ -147,11 +144,11 @@ class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
                             SizedBox(height: 4),
                             Row(
                               children: [
-                                Icon(Icons.access_time, size: 16, color: Colors.blue),
+                                Icon(Icons.speed, size: 16, color: Colors.blue),
                                 SizedBox(width: 4),
                                 Flexible(
                                   child: Text(
-                                    "Time: ${test.startTime} - ${test.endTime}",
+                                    "Kilometers: ${vehicle.vehicleKilo}",
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey[700],
@@ -164,11 +161,11 @@ class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
                             SizedBox(height: 4),
                             Row(
                               children: [
-                                Icon(Icons.calendar_today, size: 16, color: Colors.blue),
+                                Icon(Icons.build, size: 16, color: Colors.blue),
                                 SizedBox(width: 4),
                                 Flexible(
                                   child: Text(
-                                    "Date: ${test.testDate}",
+                                    "Maintenance: ${vehicle.vehicleMaintenance}",
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey[700],
@@ -181,13 +178,13 @@ class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
                           ],
                         ),
                         leading: CircleAvatar(
-                          backgroundColor: Colors.orange,
-                          child: Icon(Icons.fact_check, color: Colors.white),
+                          backgroundColor: Colors.purple,
+                          child: Icon(Icons.directions_car, color: Colors.white),
                         ),
                         trailing: IconButton(
                           icon: Icon(Icons.delete, color: Colors.red),
                           onPressed: () {
-                            _showDeleteConfirmationDialog(context, test.testID!);
+                            _showDeleteConfirmationDialog(context, vehicle.vehicleID!);
                           },
                         ),
                         isThreeLine: true,
@@ -221,13 +218,13 @@ class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const newtestpage(),
+              builder: (context) => const newvehiclepage(),
             ),
           ).then((value) => setState(() {}));  // Refresh the list when returning
         },
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
-        tooltip: 'Add new test',
+        tooltip: 'Add new vehicle',
       ),
     );
   }

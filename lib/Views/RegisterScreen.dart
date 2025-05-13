@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/Models/Student.dart';
-import 'package:untitled/Models/Student.dart';
 import 'package:untitled/Utils/Utils.dart';
 import 'package:untitled/Utils/constants.dart';
-import '../Models/Student.dart';
 import '../Models/User.dart';
-import '../Utils/DB.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../Utils/clientConfeg.dart';
 import 'LoginPage.dart';
 import 'TeacherHomePage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {

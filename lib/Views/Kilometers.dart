@@ -2,11 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/Models/Kilometer.dart';
-import '../Models/Kilometer.dart';
 import '../Utils/clientConfeg.dart';
 import 'NewKilometerPage.dart';
-import 'NewTestPage.dart';
-import 'NewVehiclePage.dart';
 import 'package:http/http.dart' as http;
 
 class kilometersPage extends StatefulWidget {

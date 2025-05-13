@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:untitled/Models/Vehicle.dart';
-import '../Models/Vehicle.dart';
 import '../Utils/clientConfeg.dart';
 
 class newvehiclepage extends StatefulWidget {

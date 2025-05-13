@@ -1,50 +1,49 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../Models/Vehicle.dart';
+import 'package:untitled/Models/Test.dart';
 import '../Utils/clientConfeg.dart';
 import 'NewTestPage.dart';
-import 'NewVehiclePage.dart';
-import 'package:http/http.dart' as http;
 
-class DrivingInstructorVehiclesPage extends StatefulWidget {
-  const DrivingInstructorVehiclesPage({Key? key}) : super(key: key);
+class DrivingTestRegistration extends StatefulWidget {
+  const DrivingTestRegistration({Key? key}) : super(key: key);
 
   @override
-  _DrivingInstructorVehiclesPageState createState() => _DrivingInstructorVehiclesPageState();
+  State<DrivingTestRegistration> createState() => _DrivingTestRegistrationState();
 }
 
-class _DrivingInstructorVehiclesPageState extends State<DrivingInstructorVehiclesPage> {
-  Future getMyvehicles() async {
-    var url = "vehicles/getvehicles.php";
+class _DrivingTestRegistrationState extends State<DrivingTestRegistration> {
+  Future getMytests() async {
+    var url = "tests/gettests.php";
     final response = await http.get(Uri.parse(serverPath + url));
     print(serverPath + url);
-    List<Vehicle> arr = [];
+    List<Test> arr = [];
 
     for(Map<String, dynamic> i in json.decode(response.body)){
-      arr.add(Vehicle.fromJson(i));
+      arr.add(Test.fromJson(i));
     }
 
     return arr;
   }
 
-  Future deletevehicles(BuildContext context, String vehicleID) async {
+  Future deletetests(BuildContext context, String testID) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? getInfoDeviceSTR = prefs.getString("getInfoDeviceSTR");
-    var url = "vehicles/deletevehicles.php?vehicleID=" + vehicleID;
+    var url = "tests/deletetests.php?testID=" + testID;
     final response = await http.get(Uri.parse(serverPath + url));
     print(serverPath + url);
     setState(() { });
     Navigator.pop(context);
   }
 
-  void _showDeleteConfirmationDialog(BuildContext context, String vehicleID) {
+  void _showDeleteConfirmationDialog(BuildContext context, String testID) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Confirm Delete'),
-          content: Text('Are you sure you want to delete this vehicle?'),
+          content: Text('Are you sure you want to delete this test record?'),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -54,7 +53,7 @@ class _DrivingInstructorVehiclesPageState extends State<DrivingInstructorVehicle
               child: Text('Cancel'),
             ),
             TextButton(
-              onPressed: () => deletevehicles(context, vehicleID),
+              onPressed: () => deletetests(context, testID),
               child: Text('Delete'),
               style: TextButton.styleFrom(
                 foregroundColor: Colors.red,
@@ -71,7 +70,7 @@ class _DrivingInstructorVehiclesPageState extends State<DrivingInstructorVehicle
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Vehicles',
+          'Driving Tests',
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -92,7 +91,7 @@ class _DrivingInstructorVehiclesPageState extends State<DrivingInstructorVehicle
           ),
         ),
         child: FutureBuilder(
-          future: getMyvehicles(),
+          future: getMytests(),
           builder: (context, projectSnap) {
             if (projectSnap.hasData) {
               if (projectSnap.data.length == 0) {
@@ -100,10 +99,10 @@ class _DrivingInstructorVehiclesPageState extends State<DrivingInstructorVehicle
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.directions_car, size: 80, color: Colors.grey[400]),
+                      Icon(Icons.fact_check, size: 80, color: Colors.grey[400]),
                       SizedBox(height: 16),
                       Text(
-                        'No vehicles found',
+                        'No driving tests found',
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.grey[700],
@@ -118,7 +117,7 @@ class _DrivingInstructorVehiclesPageState extends State<DrivingInstructorVehicle
                   padding: EdgeInsets.all(12),
                   itemCount: projectSnap.data.length,
                   itemBuilder: (context, index) {
-                    Vehicle vehicle = projectSnap.data[index];
+                    Test test = projectSnap.data[index];
 
                     return Card(
                       margin: EdgeInsets.symmetric(vertical: 8),
@@ -128,11 +127,11 @@ class _DrivingInstructorVehiclesPageState extends State<DrivingInstructorVehicle
                       ),
                       child: ListTile(
                         onTap: () {
-                          // Any action when tapping on a vehicle
+                          // Any action when tapping on the list item
                         },
                         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         title: Text(
-                          vehicle.vehicleName!,
+                          "Student ID: " + test.studentID!,
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
@@ -145,11 +144,11 @@ class _DrivingInstructorVehiclesPageState extends State<DrivingInstructorVehicle
                             SizedBox(height: 4),
                             Row(
                               children: [
-                                Icon(Icons.speed, size: 16, color: Colors.blue),
+                                Icon(Icons.access_time, size: 16, color: Colors.blue),
                                 SizedBox(width: 4),
                                 Flexible(
                                   child: Text(
-                                    "Kilometers: ${vehicle.vehicleKilo}",
+                                    "Time: ${test.startTime} - ${test.endTime}",
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey[700],
@@ -162,11 +161,11 @@ class _DrivingInstructorVehiclesPageState extends State<DrivingInstructorVehicle
                             SizedBox(height: 4),
                             Row(
                               children: [
-                                Icon(Icons.build, size: 16, color: Colors.blue),
+                                Icon(Icons.calendar_today, size: 16, color: Colors.blue),
                                 SizedBox(width: 4),
                                 Flexible(
                                   child: Text(
-                                    "Maintenance: ${vehicle.vehicleMaintenance}",
+                                    "Date: ${test.testDate}",
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey[700],
@@ -179,13 +178,13 @@ class _DrivingInstructorVehiclesPageState extends State<DrivingInstructorVehicle
                           ],
                         ),
                         leading: CircleAvatar(
-                          backgroundColor: Colors.purple,
-                          child: Icon(Icons.directions_car, color: Colors.white),
+                          backgroundColor: Colors.orange,
+                          child: Icon(Icons.fact_check, color: Colors.white),
                         ),
                         trailing: IconButton(
                           icon: Icon(Icons.delete, color: Colors.red),
                           onPressed: () {
-                            _showDeleteConfirmationDialog(context, vehicle.vehicleID!);
+                            _showDeleteConfirmationDialog(context, test.testID!);
                           },
                         ),
                         isThreeLine: true,
@@ -219,13 +218,13 @@ class _DrivingInstructorVehiclesPageState extends State<DrivingInstructorVehicle
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const newvehiclepage(),
+              builder: (context) => const newtestpage(),
             ),
           ).then((value) => setState(() {}));  // Refresh the list when returning
         },
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
-        tooltip: 'Add new vehicle',
+        tooltip: 'Add new test',
       ),
     );
   }

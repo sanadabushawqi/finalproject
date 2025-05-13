@@ -5,14 +5,12 @@ import 'package:untitled/Models/Student.dart';
 import '../Models/Schedule.dart';
 import '../Utils/clientConfeg.dart';
 import 'NewStudentScreen.dart';
-import 'drivingteacherprofile.dart';
-import 'newschedulelesson.dart';
-import 'teststimepages.dart';
-import 'viewreportspage.dart';
-import 'vehiclespage.dart';
-import 'settingspage.dart';
-import 'vacationspage.dart';
-import 'kilometers.dart';
+import 'DrivingTeacherProfile.dart';
+import 'NewScheduleLesson.dart';
+import 'TestsTimePages.dart';
+import 'VehiclesPage.dart';
+import 'VacationsPage.dart';
+import 'Kilometers.dart';
 import 'package:http/http.dart' as http;
 
 class teacherHomeScreen extends StatefulWidget {

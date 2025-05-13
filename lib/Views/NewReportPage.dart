@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:untitled/Models/Report.dart';
-import '../Models/Report.dart';
 import '../Utils/clientConfeg.dart';
 
 
@@ -95,12 +93,7 @@ class _NewreportpageState extends State<Newreportpage> {
                 ),
                 readOnly: true,
                 onTap: () => _selectDate(context),
-                // validator: (value) {
-                //   if (value == null || value.isEmpty) {
-                //     return 'Please enter lesson duration';
-                //   }
-                //   return null;
-                // },
+
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -124,15 +117,9 @@ class _NewreportpageState extends State<Newreportpage> {
                 decoration: const InputDecoration(
                   labelText: 'notes',
                   border: OutlineInputBorder(),
-                  // prefixIcon: Icon(Icons.phone),
+
                 ),
-                // keyboardType: TextInputType.phone,
-                // validator: (value) {
-                //   if (value == null || value.isEmpty) {
-                //     return 'Please enter lesson lerning';
-                //   }
-                //   return null;
-                // },
+
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -142,13 +129,7 @@ class _NewreportpageState extends State<Newreportpage> {
                   border: OutlineInputBorder(),
                   // prefixIcon: Icon(Icons.phone),
                 ),
-                // keyboardType: TextInputType.phone,
-                // validator: (value) {
-                //   if (value == null || value.isEmpty) {
-                //     return 'Please enter lesson lerning';
-                //   }
-                //   return null;
-                // },
+
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -158,17 +139,7 @@ class _NewreportpageState extends State<Newreportpage> {
                   border: OutlineInputBorder(),
                   // prefixIcon: Icon(Icons.email),
                 ),
-                // keyboardType: TextInputType.emailAddress,
-                // validator: (value) {
-                //   if (value == null || value.isEmpty) {
-                //     return 'Please enter email';
-                //   }
-                //   if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                //       .hasMatch(value)) {
-                //     return 'Please enter a valid email';
-                //   }
-                //   return null;
-                // },
+
               ),
               const SizedBox(height: 24),
               ElevatedButton(
