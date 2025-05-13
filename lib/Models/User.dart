@@ -19,7 +19,7 @@ class User{
   factory User.fromJson(Map<String, dynamic> json)=>User(
     userID:json["userID"],
     firstName:json["firstName"],
-    lastName:json[" lastName"],
+    lastName:json["lastName"],
     password:json["password"],
     createdDateTime:json["createdDateTime"],
     email:json["email"],
