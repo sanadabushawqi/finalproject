@@ -26,11 +26,11 @@ class Kilometer{
   );
 
   Map<String,dynamic>tojson()=>{
-    "kilometerID	 ":kilometerID	  ,
-    "date	 ":date	  ,
-    "vehicleID ":vehicleID  ,
-    "startKilo ":startKilo  ,
-    "endKilo ":endKilo  ,
+    "kilometerID":kilometerID	  ,
+    "date":date	  ,
+    "vehicleID":vehicleID  ,
+    "startKilo":startKilo  ,
+    "endKilo":endKilo  ,
 
   };
 }

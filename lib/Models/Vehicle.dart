@@ -23,10 +23,10 @@ class Vehicle{
   );
 
   Map<String,dynamic>tojson()=>{
-    "vehicleID	 ":vehicleID	  ,
-    "vehicleName	 ":vehicleName	  ,
-    "vehicleKilo ":vehicleKilo  ,
-    "vehicleMaintenance ":vehicleMaintenance  ,
+    "vehicleID":vehicleID	  ,
+    "vehicleName":vehicleName	  ,
+    "vehicleKilo":vehicleKilo  ,
+    "vehicleMaintenance":vehicleMaintenance  ,
 
   };
 }

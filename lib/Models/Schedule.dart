@@ -41,8 +41,8 @@ class Schedule{
     "studentID":studentID  ,
     "startTime":startTime  ,
     "endTime":endTime  ,
-    "scheduleID":studentName  ,
-    "date	":date	  ,
+    "studentName":studentName  ,
+    "date":date	  ,
 
 
   };

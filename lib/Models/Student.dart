@@ -24,21 +24,19 @@ class Student{
     firstName:json["firstName"],
     lastName:json["lastName"],
     phoneNumber:json["phoneNumber"],
-    // ID:json["ID"],
     birthDate:json["birthDate"],
     email:json["email"],
-    // password:json["password"],
+
   );
 
 
-  // [{"studentID":1,"firstName":"sadasd","lastName":"sdasd","phone":"asdasd","birthDate":"sadasd","email":"asdsad"}]
 
 
   Map<String, dynamic>tojson()=>{
     "studentID":studentID,
     "firstName":firstName,
     "lastName": lastName,
-    "phone":phoneNumber,
+    "phoneNumber":phoneNumber,
     "ID":ID,
     "birthDate":birthDate,
     "email":email,

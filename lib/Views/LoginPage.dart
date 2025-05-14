@@ -10,7 +10,6 @@ import 'package:http/http.dart' as http;
 
 
 
-// This class defines a stateful login page widget
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -69,53 +68,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
 
-    // Hide any previous error messages
-    // setState(() {
-    //   _errorMessage = null;
-    // });
-    //
-    // // Validate the form first
-    // if (!_formKey.currentState!.validate()) {
-    //   return;
-    // }
-    //
-    // // Show loading indicator
-    // setState(() {
-    //   _isLoading = true;
-    // });
-    //
-    // try {
-    //   // Simulate network delay (In real app, you would connect to your database here)
-    //   await Future.delayed(const Duration(seconds: 2));
-    //
-    //   // Here you would check credentials against your database
-    //   // For now, we'll just return success for demo purposes
-    //
-    //   // If login is successful, navigate to home page
-    //   // In a real app, you'd navigate to your home screen like this:
-    //   // Navigator.of(context).pushReplacement(
-    //   //   MaterialPageRoute(builder: (context) => HomePage()),
-    //   // );
-    //
-    //   // For demo purposes, we'll just show a success message
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(
-    //       content: Text('Login successful! Redirecting...'),
-    //       backgroundColor: Colors.green,
-    //     ),
-    //   );
-    //   Navigator.push(context, MaterialPageRoute(builder: (context) => teacherHomeScreen()));
-    // } catch (e) {
-    //   // Show error message if login fails
-    //   setState(() {
-    //     _errorMessage = 'Failed to login. Please check your credentials.';
-    //   });
-    // } finally {
-    //   // Hide loading indicator
-    //   setState(() {
-    //     _isLoading = false;
-    //   });
-    // }
+
   }
 
   @override
@@ -315,11 +268,7 @@ class _LoginPageState extends State<LoginPage> {
                       const Text("Don't have an account?"),
                       TextButton(
                         onPressed: () {
-                          // Navigate to register page
-                          // In a real app:
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(builder: (context) => RegisterPage()),
-                          // );
+
                           Navigator.push(context, MaterialPageRoute(builder: (context) => teacherHomeScreen()));
 
                           // For demo purposes
